@@ -1,0 +1,22 @@
+h1{
+	color:#144893;
+	font-size: 50px;
+}
+h2{
+	color:#144893;
+}
+h3{
+	color:#144893;
+}
+#nav{
+	margin: 10px 10px 0px 10px;
+	text-align: right;
+}
+
+.agradecimientos{
+	color: #144893;
+	width: 600px;
+	margin: 10% auto 0 auto;
+	text-align: center;
+	
+}

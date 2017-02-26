@@ -1,0 +1,74 @@
+body{
+	background-image: url("imagen1.jpg");
+	/*./imagen/logo_sistemcobro.png*/
+	background-repeat: no-repeat;
+	background-size:35%; 
+	background-attachment: fixed
+}
+h1{
+	color:#144893;
+}
+h2{
+	color:#144893;
+}
+h3{
+	color:#144893;
+}
+label.invalid {
+	color: red;
+	font-weight: normal;
+	font-size: 12px;
+	margin-top: 3px;
+}
+
+#nav{
+	margin: 10px 10px 0px 10px;
+	text-align: right;
+}
+.margen-arriba{
+	margin-top: 20px;
+}
+.margen-abajo{
+	margin-bottom: 20px;
+}
+.margen-abajot{
+	margin-bottom: 150px;
+}
+.contenedor{
+	margin: 0 auto;
+	max-width: 80%;
+	
+}
+.contenedor h1{
+	text-align: center;
+}
+.borde-p{
+	
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	border: 1px solid #E2E2E2;
+	/* azul: 144893 gris:#E2E2E2 */	
+	padding: 20px;
+}
+.borde-p h2{
+	padding-top: 0;
+	margin-top: 0;
+}
+.btn-guardar{
+	padding: 10px 60px;
+	font-size: 18px;
+	
+}
+.centro{
+	text-align: center;
+}
+.agradecimientos{
+	color: #144893;
+}
+.check{
+
+	padding-right: 30px;
+	padding-left: 0px;
+
+}
