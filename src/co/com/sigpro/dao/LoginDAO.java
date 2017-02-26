@@ -7,13 +7,14 @@ import javax.sql.DataSource;
 import co.com.sigpro.bean.Usuario;
 import co.com.sigpro.constante.EstadoEnum;
 import co.com.sigpro.exception.DatoException;
+import co.com.sigpro.interfaces.ILoginDAO;
 import co.com.sigpro.util.Log;
 
 
 /**
  * Clase para manejo de operaciones con datos y acceso a los mismo.
  * */
-public class LoginDAO extends DataBaseDAO{
+public class LoginDAO extends DataBaseDAO implements ILoginDAO{
 
 	private Log logger = new Log();
 	
@@ -38,6 +39,7 @@ public class LoginDAO extends DataBaseDAO{
 	 * @param Usuario usuario.
 	 * @throws DataException 
 	 * */
+	@Override
 	public Usuario consultarUsuario(Usuario usuario) throws DatoException{
 				
 		final String METHOD_NAME = "[consultarUsuario]";
