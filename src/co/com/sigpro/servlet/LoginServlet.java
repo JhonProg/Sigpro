@@ -125,7 +125,7 @@ public class LoginServlet extends HttpServlet {
     			}else{
     				
     				request.setAttribute(SigproConstante.NOMBRE_COMPLETO, usuarioEncontrado.getNombre()+" "+usuarioEncontrado.getApellido());
-    				request.setAttribute(SigproConstante.NOMBRE_USUARIO,usuario);
+    				request.setAttribute(SigproConstante.NOMBRE_USUARIO,usuarioEncontrado.getUsuario());
     				request.setAttribute(SigproConstante.ROL,usuarioEncontrado.getIdRol());
     				
     				session.setAttribute(SigproConstante.USUARIO_SESSION, usuarioEncontrado);

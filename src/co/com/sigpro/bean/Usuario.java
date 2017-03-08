@@ -17,6 +17,10 @@ public class Usuario implements Serializable{
 	private String apellido;
 	private Integer estado;
 	
+	/** Relaciones */
+	private TipoDocumento tipoDocumento;
+	private Rol rol;
+	
 	public Integer getIdUsuario() {
 		return idUsuario;
 	}
@@ -95,5 +99,26 @@ public class Usuario implements Serializable{
 				+ ", numeroDocumento=" + numeroDocumento + ", usuario=" + usuario + ", clave=" + clave + ", nombre="
 				+ nombre + ", apellido=" + apellido + ", estado=" + estado + "]";
 	}
+
+	/** Relaciones*/
+	
+	public TipoDocumento getTipoDocumento() {
+		return tipoDocumento;
+	}
+
+	public void setTipoDocumento(TipoDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
+	}
+	
+	
+	
 	
 }

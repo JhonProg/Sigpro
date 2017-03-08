@@ -6,11 +6,10 @@ import co.com.sigpro.bean.Usuario;
 import co.com.sigpro.dao.LoginDAO;
 import co.com.sigpro.exception.DatoException;
 import co.com.sigpro.exception.LogicaException;
-import co.com.sigpro.interfaces.ILoginEJB;
 import co.com.sigpro.util.Log;
 
 @Stateless
-public class LoginEJB extends DataBaseEJB implements ILoginEJB{
+public class LoginEJB extends DataBaseEJB{
 	
 	private Log logger = new Log();
 	
@@ -19,7 +18,6 @@ public class LoginEJB extends DataBaseEJB implements ILoginEJB{
 	 * @param Usuario usuario.
 	 * @throws DataException 
 	 * */
-	@Override
 	public Usuario consultarUsuario(Usuario usuario) throws LogicaException{
 		try{
 			LoginDAO loginDAO = new LoginDAO(ds_consulta);

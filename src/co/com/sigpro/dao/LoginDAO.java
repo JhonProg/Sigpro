@@ -39,6 +39,59 @@ public class LoginDAO extends DataBaseDAO implements ILoginDAO{
 	 * @param Usuario usuario.
 	 * @throws DataException 
 	 * */
+//	@Override
+//	public Usuario consultarUsuario(Usuario usuario) throws DatoException{
+//				
+//		final String METHOD_NAME = "[consultarUsuario]";
+//		Usuario usuarioExiste = null;
+//		
+//		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+//		
+//		StringBuffer CONSULTA_USUARIO = new StringBuffer();
+//		
+//		CONSULTA_USUARIO.append(" SELECT idusuario,idtipodocumento,idrol,numerodocumento,usuario,clave,nombre,apellido,estado");
+//		CONSULTA_USUARIO.append(" FROM usuario WHERE usuario=? AND clave = ? AND estado=? ");
+//		
+//		logger.info(CONSULTA_USUARIO.toString());
+//		
+//		try{
+//			conexion = dataSource.getConnection();
+//			
+//			/** Parametros */
+//			preparedStatement = conexion.prepareStatement(CONSULTA_USUARIO.toString());
+//			preparedStatement.setString(1, usuario.getUsuario());
+//			preparedStatement.setString(2, usuario.getClave());
+//			preparedStatement.setInt(3, EstadoEnum.ACTIVO.getIndex());
+//			
+//			resultSet = preparedStatement.executeQuery();
+//			
+//			if(resultSet.next()){
+//				usuarioExiste = new Usuario();
+//				
+//				usuarioExiste.setIdUsuario(resultSet.getInt("idusuario"));
+//				usuarioExiste.setIdTipoDocumento(resultSet.getInt("idtipodocumento"));
+//				usuarioExiste.setIdRol(resultSet.getInt("idrol"));
+//				usuarioExiste.setNumeroDocumento(resultSet.getString("numerodocumento"));
+//				usuarioExiste.setUsuario(resultSet.getString("usuario"));
+//				usuarioExiste.setClave(resultSet.getString("clave"));
+//				usuarioExiste.setNombre(resultSet.getString("nombre"));
+//				usuarioExiste.setApellido(resultSet.getString("apellido"));
+//				usuarioExiste.setEstado(resultSet.getInt("estado"));
+//			}
+//			
+//		}catch(SQLException e){
+//			logger.error(e.getMessage());
+//			throw new DatoException(e.getMessage(),e);
+//		} catch (Exception e) {
+//			logger.error(e.getMessage());
+//			throw new DatoException(e.getMessage(),e);
+//		} finally {
+//			closeConnections();
+//		}
+//		
+//		return usuarioExiste;
+//	}
+//	
 	@Override
 	public Usuario consultarUsuario(Usuario usuario) throws DatoException{
 				
@@ -49,8 +102,7 @@ public class LoginDAO extends DataBaseDAO implements ILoginDAO{
 		
 		StringBuffer CONSULTA_USUARIO = new StringBuffer();
 		
-		CONSULTA_USUARIO.append(" SELECT idusuario,idtipodocumento,idrol,numerodocumento,usuario,clave,nombre,apellido,estado");
-		CONSULTA_USUARIO.append(" FROM usuario WHERE usuario=? AND clave = ? AND estado=? ");
+		CONSULTA_USUARIO.append(" SELECT * FROM SP_consulta_usuario_por_usuario_clave(?,?,?)");
 		
 		logger.info(CONSULTA_USUARIO.toString());
 		
@@ -64,19 +116,19 @@ public class LoginDAO extends DataBaseDAO implements ILoginDAO{
 			preparedStatement.setInt(3, EstadoEnum.ACTIVO.getIndex());
 			
 			resultSet = preparedStatement.executeQuery();
-			
+						
 			if(resultSet.next()){
 				usuarioExiste = new Usuario();
 				
-				usuarioExiste.setIdUsuario(resultSet.getInt("idusuario"));
-				usuarioExiste.setIdTipoDocumento(resultSet.getInt("idtipodocumento"));
-				usuarioExiste.setIdRol(resultSet.getInt("idrol"));
-				usuarioExiste.setNumeroDocumento(resultSet.getString("numerodocumento"));
-				usuarioExiste.setUsuario(resultSet.getString("usuario"));
-				usuarioExiste.setClave(resultSet.getString("clave"));
-				usuarioExiste.setNombre(resultSet.getString("nombre"));
-				usuarioExiste.setApellido(resultSet.getString("apellido"));
-				usuarioExiste.setEstado(resultSet.getInt("estado"));
+				usuarioExiste.setIdUsuario(resultSet.getInt(1));
+				usuarioExiste.setIdTipoDocumento(resultSet.getInt(2));
+				usuarioExiste.setIdRol(resultSet.getInt(3));
+				usuarioExiste.setNumeroDocumento(resultSet.getString(4));
+				usuarioExiste.setUsuario(resultSet.getString(5));
+				usuarioExiste.setClave(resultSet.getString(6));
+				usuarioExiste.setNombre(resultSet.getString(7));
+				usuarioExiste.setApellido(resultSet.getString(8));
+				usuarioExiste.setEstado(resultSet.getInt(9));
 			}
 			
 		}catch(SQLException e){
@@ -91,5 +143,6 @@ public class LoginDAO extends DataBaseDAO implements ILoginDAO{
 		
 		return usuarioExiste;
 	}
+	
 	
 }

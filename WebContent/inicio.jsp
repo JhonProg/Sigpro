@@ -6,7 +6,19 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 	<title>SIGPRO-FUKL</title>
 	
-	<link type="text/css" href="${ctx}/css/sc.css" rel="stylesheet" />			
+	<link type="text/css" href="${ctx}/css/sigpro.css" rel="stylesheet" />			
+	<link type="text/css" href="${ctx}/css/jquery/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
+	
+	<script type="text/javascript" src="${ctx}/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="${ctx}/js/jquery-ui-1.8.21.custom.min.js"></script>
+	<script type="text/javascript" src="${ctx}/js/jquery.validate.js"></script>
+	<script type="text/javascript" src="${ctx}/js/jquery.tablesorter.min.js"></script>
+	<script type="text/javascript" src="${ctx}/js/jquery.fixedtableheader.min.js"></script>
+	<script type="text/javascript" src="${ctx}/js/jquery.fixedtable.js"></script>
+	<script type="text/javascript" src="${ctx}/js/jquery.dateformat.js"></script>	
+	
+	<%--
+	<link type="text/css" href="${ctx}/css/sigpro.css" rel="stylesheet" />			
 	<link type="text/css" href="${ctx}/css/jquery/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 	<link type="text/css" href="${ctx}/css/jquery/jquery.multiselect.css" rel="Stylesheet" />
 	
@@ -50,7 +62,7 @@
 	<link rel="stylesheet" href="${ctx}/Animated-Circle/css/progress.css">
 	<script type="text/javascript" src="${ctx}/Animated-Circle/src/jquery-asPieProgress.js"></script>
 	<link rel="stylesheet" href="${ctx}/Animated-Circle/css/progress.css">
-
+--%>
 <script type="text/javascript">
 
 	function campoTrim(obj){
@@ -90,20 +102,20 @@
 				cache: false,
 				error: function( xhr, status, index, anchor ) {
 					$( anchor.hash ).html(
-						"No se pudo cargar esta pestaña. Informe al administrador del sistema." );
+						"No se pudo cargar esta pestana. Informe al administrador del sistema." );
 				}
 			}
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');		
 		
-	    $('body').restive({
-	    	breakpoints: ['240', '320', '480', '640-p', '640-l', '960'],
-	    	classes: ['css-240', 'css-320', 'css-480', 'css-640-p', 'css-640-l', 'css-960']
-	    });
+// 	    $('body').restive({
+// 	    	breakpoints: ['240', '320', '480', '640-p', '640-l', '960'],
+// 	    	classes: ['css-240', 'css-320', 'css-480', 'css-640-p', 'css-640-l', 'css-960']
+// 	    });
 	    
-	    $('#testinicio').restive({
-		    breakpoints: ['240', '320', '480', '640-p', '640-l', '960'],
-		    classes: ['css-240', 'css-320', 'css-480', 'css-640-p', 'css-640-l', 'css-960']
-		    });
+// 	    $('#testinicio').restive({
+// 		    breakpoints: ['240', '320', '480', '640-p', '640-l', '960'],
+// 		    classes: ['css-240', 'css-320', 'css-480', 'css-640-p', 'css-640-l', 'css-960']
+// 		    });
 
 	});
 
@@ -143,7 +155,7 @@
 					<!-- Administrador -->
 					<c:if test="${rol==1}">
 						<li>
-							<a href="#">&nbsp;Usuarios<span>&nbsp;</span></a>
+							<a href="${ctx}/page/usuario?action=cargarConsultarUsuario">&nbsp;Usuarios<span>&nbsp;</span></a>
 						</li>
 						
 						<li>

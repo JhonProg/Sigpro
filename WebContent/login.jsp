@@ -3,9 +3,10 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<!-- 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
 	<title>Login</title>
 	
-	<link rel="stylesheet" type="text/css" href="${ctx}/css/sc.css">
+	<link rel="stylesheet" type="text/css" href="${ctx}/css/sigpro.css">
 	<link type="text/css" href="${ctx}/css/jquery/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
 	<script type="text/javascript" src="${ctx}/js/jquery-1.7.2.min.js"></script>
 	<script type="text/javascript" src="${ctx}/js/jquery-ui-1.8.21.custom.min.js"></script>
@@ -70,7 +71,7 @@
 						id="j_usuario" style="autocorrect=off" /></td>
 				</tr>
 				<tr>
-					<td align="right"><b>Contraseña: </b></td>
+					<td align="right"><b>Clave: </b></td>
 					<td><input type="password" name="clave" tabindex="2"
 						id="j_clave" style="autocomplete=off" /></td>
 				</tr>
