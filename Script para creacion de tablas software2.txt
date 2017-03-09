@@ -1,0 +1,49 @@
+/*****************************************************************/
+/* Proyecto: SISTEMA DE GESTION DE PEDIDOS                       */
+/* ***************************************************************/
+/*                                                               */
+/*                          DESCRIPCIÓN                          */
+/* ***************************************************************/
+/* Este script permite la creación de las tablas segun modelo de */
+/* la base de datos del sistema de gestión de pedidos.           */
+/* ***************************************************************/
+/*                                                               */
+/*                  HISTORIAL DE MODIFICACIONES                  */
+/* ************************************************************* */
+/*    FECHA (dd-MM-YYY) |  Autor(es)  |   MODIFICACIÓN           */
+/*                                                               */
+/*    11-02-2017        | jfpuentesn  |  Emisión inicial         */
+/*                                                               */
+/*****************************************************************/
+
+CREATE TABLE tipo_documento (
+  idtipodocumento INTEGER NOT NULL,
+  tipo VARCHAR NOT NULL,
+  descripcion VARCHAR NOT NULL,
+  estado INTEGER NOT NULL,
+  PRIMARY KEY(idtipodocumento)
+);
+
+CREATE TABLE rol (
+  idrol INTEGER NOT NULL,
+  rol VARCHAR NOT NULL,
+  descripcion VARCHAR NOT NULL,
+  estado INTEGER NOT NULL,
+  PRIMARY KEY(idrol)
+);
+
+
+CREATE TABLE usuario (
+  idusuario SERIAL,
+  idtipodocumento INTEGER NOT NULL,
+  idrol INTEGER NOT NULL,
+  numerodocumento VARCHAR NOT NULL,
+  usuario VARCHAR NOT NULL,
+  clave VARCHAR NOT NULL,
+  nombre VARCHAR NOT NULL,
+  apellido VARCHAR NOT NULL,
+  estado INTEGER NOT NULL,
+  PRIMARY KEY(idusuario),
+  FOREIGN KEY(idrol)REFERENCES rol(idrol),
+  FOREIGN KEY(idtipodocumento) REFERENCES tipo_documento(idtipodocumento)
+);
