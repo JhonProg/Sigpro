@@ -241,6 +241,7 @@ public class UsuarioServlet extends HttpServlet {
     		String apellidos          = request.getParameter("apellidos");
     		String usuario            = request.getParameter("usuario");
     		String clave              = request.getParameter("clave");
+    		Integer estado            = Integer.parseInt(request.getParameter("idEstado"));
     		
     		Usuario usuarioEdicion = new Usuario();
     		
@@ -252,7 +253,7 @@ public class UsuarioServlet extends HttpServlet {
     		usuarioEdicion.setClave(clave);
     		usuarioEdicion.setNombre(nombres);
     		usuarioEdicion.setApellido(apellidos);
-    		usuarioEdicion.setEstado(EstadoEnum.ACTIVO.getIndex());
+    		usuarioEdicion.setEstado(estado);
     		
     		int resultado = usuarioEJB.editarUsuario(usuarioEdicion);
     		

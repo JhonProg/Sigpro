@@ -234,6 +234,19 @@
 			</td>
 		</tr>
 		
+		<tr>
+			<th nowrap="nowrap" style="text-align: right;">Estado:</th>
+			<td>
+				<select name="idEstado">
+					<option value="2">Activo - Activar</option>
+				    <option value="1">Inactivo - Inactivar</option>
+				</select>
+				<script type="text/javascript">
+					$("#fEditarUsuario [name=idEstado]").val("${usuario.estado}");
+				</script>
+			</td>
+		</tr>
+		
 		</table>
 	</fieldset>
 	<br/>

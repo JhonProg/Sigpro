@@ -159,7 +159,7 @@
 						</li>
 						
 						<li>
-							<a href="#">&nbsp;Productos<span>&nbsp;</span></a>
+							<a href="${ctx}/page/producto?action=cargarConsultarProducto">&nbsp;Productos<span>&nbsp;</span></a>
 						</li>	
 					</c:if>
 					

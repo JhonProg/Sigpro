@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import co.com.sigpro.bean.ProductoCategoria;
+import co.com.sigpro.bean.ProductoEstado;
 import co.com.sigpro.bean.Rol;
 import co.com.sigpro.bean.TipoDocumento;
 import co.com.sigpro.constante.EstadoEnum;
@@ -134,5 +136,90 @@ public class CatalogoDAO extends DataBaseDAO{
 		return listaRoles;
 	}
 	
+	
+	public List<ProductoCategoria> consultarProductoCategorias() throws DatoException{
+		final String METHOD_NAME = "[consultarProductoCategorias]";
+		
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		List<ProductoCategoria> categorias  = new ArrayList<>();
+		ProductoCategoria productoCategoria = null;
+		StringBuffer CONSULTA = new StringBuffer();
+		
+		CONSULTA.append("SELECT idproductocategoria,categoria,descripcion,estado FROM producto_categoria ");
+		
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			resultSet         = preparedStatement.executeQuery();
+						
+			while(resultSet.next()){
+				productoCategoria = new ProductoCategoria();
+				
+				productoCategoria.setIdProductoCategoria(resultSet.getInt("idproductocategoria"));
+				productoCategoria.setCategoria(resultSet.getString("categoria"));
+				productoCategoria.setDescripcion(resultSet.getString("descripcion"));
+				productoCategoria.setEstado(resultSet.getInt("estado"));
+				
+				categorias.add(productoCategoria);
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		
+		return categorias;
+	}
+	
+	
+
+	public List<ProductoEstado> consultarProductoEstados() throws DatoException{
+		final String METHOD_NAME = "[consultarProductoEstados]";
+		
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		List<ProductoEstado> estados  = new ArrayList<>();
+		ProductoEstado productoEstado = null;
+		StringBuffer CONSULTA = new StringBuffer();
+		
+		CONSULTA.append(" SELECT idproductoestado, estado, descripcion FROM producto_estado ");
+		
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			resultSet         = preparedStatement.executeQuery();
+						
+			while(resultSet.next()){
+				productoEstado = new ProductoEstado();
+				
+				productoEstado.setIdpedidoestado(resultSet.getInt("idproductoestado"));
+				productoEstado.setEstado(resultSet.getString("estado"));
+				productoEstado.setDescripcion(resultSet.getString("descripcion"));
+								
+				estados.add(productoEstado);
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		
+		return estados;
+	}
 	
 }

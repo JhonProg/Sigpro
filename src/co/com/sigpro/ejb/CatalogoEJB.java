@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 
+import co.com.sigpro.bean.ProductoCategoria;
+import co.com.sigpro.bean.ProductoEstado;
 import co.com.sigpro.bean.Rol;
 import co.com.sigpro.bean.TipoDocumento;
 import co.com.sigpro.dao.CatalogoDAO;
@@ -45,4 +47,45 @@ public class CatalogoEJB extends DataBaseEJB{
 		}
 	}
 	
+	/**
+	 * Consulta el catalogo de las categorias.
+	 * @throws DataException 
+	 * */
+	public List<ProductoCategoria> consultarProductoCategorias() throws LogicaException{
+		try{
+			CatalogoDAO catalogoDAO = new CatalogoDAO(ds_consulta);
+			return catalogoDAO.consultarProductoCategorias();
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	}
+	
+	
+	
+	/**
+	 * Consulta el catalogo de las categorias.
+	 * @throws DataException 
+	 * */
+	public List<ProductoEstado> consultarProductoEstados() throws LogicaException{
+		try{
+			CatalogoDAO catalogoDAO = new CatalogoDAO(ds_consulta);
+			return catalogoDAO.consultarProductoEstados();
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
