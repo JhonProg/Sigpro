@@ -65,6 +65,8 @@
 --%>
 <script type="text/javascript">
 
+
+
 	function campoTrim(obj){
 		$(obj).val($.trim($(obj).val()));
 	}
@@ -106,16 +108,6 @@
 				}
 			}
 		}).addClass('ui-tabs-vertical ui-helper-clearfix');		
-		
-// 	    $('body').restive({
-// 	    	breakpoints: ['240', '320', '480', '640-p', '640-l', '960'],
-// 	    	classes: ['css-240', 'css-320', 'css-480', 'css-640-p', 'css-640-l', 'css-960']
-// 	    });
-	    
-// 	    $('#testinicio').restive({
-// 		    breakpoints: ['240', '320', '480', '640-p', '640-l', '960'],
-// 		    classes: ['css-240', 'css-320', 'css-480', 'css-640-p', 'css-640-l', 'css-960']
-// 		    });
 
 	});
 
@@ -123,10 +115,14 @@
 		$("#tabsOpciones").tabs("load", index );
 	}
 	
+
+
+	
 </script>
 </head>
 
 <body>
+	
 	<div id="testinicio" >
 		<table border="0"  width="100%">
 			<tr height="30">
@@ -137,18 +133,19 @@
 						(<b><c:out value="${nombreUsuario}"/>)</b>, 
 						<a href="${ctx}/page/login?action=cerrarSesion" id="salir_sistema">Salir</a>
 						<br>
-						<br>
+						<c:if test="${rol==4}">
+							<br>
+							<span class="enlace" onclick="verCarritoCompras();" title="Carrito">
+								<img alt="Detalle" src="${ctx}/imagen/carrito.png">
+							</span>
+							<br/> 
+							<b>Carrito de compras</b>
+						</c:if>
 					</div>
 				</td>
 			</tr>
-				
-			<tr>
-				<td>	
-				</td>
-			</tr>
 		</table>
-		
-		
+				
 		<div style="padding: 10px;">
 			<div id="tabsOpciones" class="tab tab-vert">
 				<ul>
@@ -180,11 +177,15 @@
 					<!-- Promotor -->
 					<c:if test="${rol==4}">
 						<li>
-							<a href="#">&nbsp;Productos<span>&nbsp;</span></a>
+							<a href="${ctx}/page/producto?action=cargarConsultarProducto">&nbsp;Productos<span>&nbsp;</span></a>
+						</li>	
+						
+						<li>
+							<a href="${ctx}/page/pedido?action=cargarCrearPedido">&nbsp;Pedidos<span>&nbsp;</span></a>
 						</li>
 						
 						<li>
-							<a href="#">&nbsp;Pedidos<span>&nbsp;</span></a>
+							<a href="${ctx}/page/pedido?action=misPedidos">&nbsp;Mis Pedidos<span>&nbsp;</span></a>
 						</li>	
 					</c:if>	
 							
@@ -195,5 +196,6 @@
 		<div style="padding: 50px 0px;" ></div>
 	
 	</div>
+	
 </body>
 </html>

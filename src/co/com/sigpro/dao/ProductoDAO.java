@@ -10,7 +10,6 @@ import javax.sql.DataSource;
 import co.com.sigpro.bean.Producto;
 import co.com.sigpro.bean.ProductoCategoria;
 import co.com.sigpro.bean.ProductoEstado;
-import co.com.sigpro.bean.Usuario;
 import co.com.sigpro.exception.DatoException;
 import co.com.sigpro.util.Log;
 

@@ -3,39 +3,38 @@
 
 	$(document).ready(function() {
 		
-		$("#productos").fixedtableheader();
+		$("#productosPedido").fixedtableheader();
 		
-		$("#dmEditarProducto").dialog({   				
-			width: 800,
-			height: 400,   				
+		$("#dmConfirmarCantidad").dialog({
+			width: 200,
+			height: 150,   				
 			modal: true,
 			autoOpen: false,
 			resizable: true
 		});
 		
-		
 	});
 
-	function cargarEditarProducto(idProducto){
-		$("#dmEditarProducto").dialog("open");
-		$("#dmEditarProducto").html(getHTMLLoaging30());
+	function agregarAlCarrito(idCliente,idProducto,cantidad){
+		
+		$("#dmConfirmarCantidad").dialog("open");
+		$("#dmConfirmarCantidad").html(getHTMLLoaging30());
 		$.ajax({
 			cache: false,
 			contentType: 'application/x-www-form-urlencoded; charset=iso-8859-1;', 
             type: 'POST',
-            url: "${ctx}/page/producto?action=cargarEditarProducto&idProducto="+idProducto,
+            url: "${ctx}/page/pedido?action=confirmarCantidad&idCliente="+idCliente+"&idProducto="+idProducto+"&cantidad="+cantidad,
             dataType: "text",
             error: function(jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.statusText);
-                $("#dmEditarProducto").dialog("close");
+            	var mensajeER = '<h3 style="color:red">'+jqXHR.statusText+'</h3>';
+             	$("#dmConfirmarCantidad").html(mensajeER);
 	        },
             success: function(data) {		                    	                    	
-               	$("#dmEditarProducto").html(data);     
+               	$("#dmConfirmarCantidad").html(data);     
             }
         });
+		
 	}
-	
-	
 	
 </script>
 <div align="left" >
@@ -51,7 +50,7 @@
 			<div>
 			<div style="clear: both;"></div>
 			<div id="divproductos" >
-				<table width="100%" border="0" id="productos" class="tExcel tRowSelect">
+				<table width="100%" border="0" id="productosPedido" class="tExcel tRowSelect">
 				  
 				  <col style="width: 20px;"/>
 				  <col style="width: 20px;"/>
@@ -69,9 +68,9 @@
 				  <thead>
 					  <tr class="td3">
 					    <th>#</th>			    
-						<th>ID producto</span></th>
-						<th>SKU</span></th>	
-					  	<th>Codigo Barras</span></th>
+						<th>ID producto</th>
+						<th>SKU</th>	
+					  	<th>Codigo Barras</th>
 					  	<th>Estado</th>
 					  	<th>Categoria</th>	
 					  	<th>Nombre producto</th>		  				  	
@@ -79,9 +78,7 @@
 					  	<th>Precio Unitario</th>
 					  	<th>Precio Descuento</th>
 					  	<th>Cantidad</th>
-					  	<c:if test="${rol==1}">
-					  		<th>Acciones</th>
-					  	</c:if>
+					  	<th>Acciones</th>
 					  </tr>
 				  </thead>
 				  <tbody>
@@ -100,13 +97,13 @@
 					    <td><c:out value="${producto.precioDescuento}"/></td>
 					    <td><c:out value="${producto.cantidad}"/></td>
 					    
-					    <c:if test="${rol==1}">
-						  	<td valign="middle" align="center">
-						  		<span class="enlace" onclick="cargarEditarProducto(${producto.idProducto});" title="Editar">
-						  		<img alt="Editar" src="${ctx}/imagen/ico-editar.gif">
+					  	<td valign="middle" align="center">
+					  		<c:if test="${producto.cantidad>0}">
+						  		<span class="enlace" title="Agregar al carrito" onclick="agregarAlCarrito(${idCliente},${producto.idProducto},${producto.cantidad});">
+						  			<img alt="Editar" src="${ctx}/imagen/carrito.png">
 						  		</span>
-						  	</td>
-					  	</c:if>
+					  		</c:if>
+					  	</td>
 					  						  	
 					  </tr>			 
 				  </c:forEach>			  
@@ -118,5 +115,4 @@
 </c:choose>
 </fieldset>
 </div>
-
-<div id="dmEditarProducto" title="Editar Producto"></div>
+<div id="dmConfirmarCantidad" title="Confirme cantidad"></div>

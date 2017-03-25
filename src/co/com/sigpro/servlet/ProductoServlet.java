@@ -11,12 +11,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import co.com.sigpro.bean.Producto;
 import co.com.sigpro.bean.ProductoCategoria;
 import co.com.sigpro.bean.ProductoEstado;
 import co.com.sigpro.bean.Usuario;
-import co.com.sigpro.constante.EstadoEnum;
+import co.com.sigpro.constante.SigproConstante;
 import co.com.sigpro.ejb.CatalogoEJB;
 import co.com.sigpro.ejb.ProductoEJB;
 import co.com.sigpro.exception.LogicaException;
@@ -94,10 +95,15 @@ public class ProductoServlet extends HttpServlet {
     	logger.info(CLASS_NAME+"-"+METHOD_NAME);
     	
     	try{
-		
+    		HttpSession session = request.getSession();
+    		Usuario usuarioLogueado = (Usuario)session.getAttribute(SigproConstante.USUARIO_SESSION);
+    		    		
     		List<ProductoCategoria> listaCategoriasProducto = catalogoEJB.consultarProductoCategorias();
+    		
+    		request.setAttribute("rol", usuarioLogueado.getIdRol());
     		request.setAttribute("listaCategoriasProducto", listaCategoriasProducto);
-			request.getRequestDispatcher("../pages/admin/consultaProducto.jsp").forward(request, response);
+			
+    		request.getRequestDispatcher("../pages/admin/consultaProducto.jsp").forward(request, response);
 			
     	}catch(Exception e){
     		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
@@ -112,6 +118,8 @@ public class ProductoServlet extends HttpServlet {
     	try{
 		
     		List<Producto> productos = new ArrayList<>();
+    		HttpSession session = request.getSession();
+    		Usuario usuarioLogueado = (Usuario)session.getAttribute(SigproConstante.USUARIO_SESSION);
     		
     		Integer tipoBusquedaProducto = Integer.parseInt(request.getParameter("tipoBusquedaProducto"));
     		
@@ -130,6 +138,7 @@ public class ProductoServlet extends HttpServlet {
     		
     		logger.info("Se encontraron ["+productos.size()+"] productos...");
     		
+    		request.setAttribute("rol", usuarioLogueado.getIdRol());
     		request.setAttribute("productos", productos);
 			request.getRequestDispatcher("../pages/admin/listaProductos.jsp").forward(request, response);
 			

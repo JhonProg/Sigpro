@@ -20,6 +20,9 @@ public class Producto implements Serializable{
 	private ProductoEstado productoEstado;
 	private ProductoCategoria productoCategoria;
 	
+	/** CArrito de compras */
+	private double subTotal;
+	
 	public int getIdProducto() {
 		return idProducto;
 	}
@@ -92,8 +95,11 @@ public class Producto implements Serializable{
 	public void setProductoCategoria(ProductoCategoria productoCategoria) {
 		this.productoCategoria = productoCategoria;
 	}
-	
-	
-	
+	public double getSubTotal() {
+		return subTotal;
+	}
+	public void setSubTotal(double subTotal) {
+		this.subTotal = subTotal;
+	}
 	
 }

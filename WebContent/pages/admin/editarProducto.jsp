@@ -99,7 +99,7 @@
 	
 	function editarProducto(form) {
 		$("[name=btnEditarProducto]").attr('disabled',true);
-		$("[name=btnEditarCancelarProducto]").attr('disabled',true);;
+		$("[name=btnEditarCancelarProducto]").attr('disabled',true);
 		$("#dmMensajeProducto").dialog("open");
 		$("#dmMensajeProducto").html(getHTMLLoaging16(' Guardando'));
 		$.ajax({

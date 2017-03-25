@@ -17,6 +17,17 @@
 			
 			$("#btnIngresar").button();
 			
+				
+				$("#dmCarritoCompras").dialog({   				
+					width: 400,
+					height: 200,   				
+					modal: true,
+					autoOpen: false,
+					resizable: true
+				});
+				
+			
+			
 			$("#fLogin").validate({
 				errorLabelContainer: "#msnLogin",
 				errorClass: "invalid",
@@ -41,6 +52,8 @@
 			$("#j_usuario").focus();
 			
 		});
+		
+		
 	</script>
 	
 </head>

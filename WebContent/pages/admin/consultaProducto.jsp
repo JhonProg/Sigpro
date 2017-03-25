@@ -134,7 +134,7 @@
 <div id="consultaPrincipalProductos">
 
 <form name="fBuscarProductos" id="fBuscarProductos" action="${ctx}/page/producto" method="post">
-	<input type="hidden" name="action" value="consultarProductos"/>
+		<input type="hidden" name="action" value="consultarProductos"/>
 		<fieldset>
 		<legend class="e6">Consulta</legend>
 				<table style="cellspacing:2,  width:100%, border:0">
@@ -178,11 +178,14 @@
 				          </td>
 			       <td></td>
 			       
-			       	<td>  
-				       	<!-- Nuevo usuario -->
-						<td valign="middle" align="center" >
-						 	<button type="button" id="btnNuevoProducto" name="btnNuevoProducto">Nuevo producto</button>
-						</td>
+			       	<td>
+			       		<!-- Permiso para el admin -->
+			       		<c:if test="${rol==1}">  
+					       	<!-- Nuevo producto  -->
+							<td valign="middle" align="center" >
+							 	<button type="button" id="btnNuevoProducto" name="btnNuevoProducto">Nuevo producto</button>
+							</td>
+						</c:if>
 				
 						</table>
 					</tr>
