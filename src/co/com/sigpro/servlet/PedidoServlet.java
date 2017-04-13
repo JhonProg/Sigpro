@@ -105,6 +105,9 @@ public class PedidoServlet extends HttpServlet {
 				case "actualizarCantidadDeProductoEnPedido":
 					actualizarCantidadDeProductoEnPedido(request, response);
 					break;
+				case "consultarPedidosPorMesYUsuario":
+					consultarPedidosPorMesYUsuario(request, response);
+					break;
 				default:
 					break;
 			}
@@ -341,14 +344,16 @@ public class PedidoServlet extends HttpServlet {
 	    	
 	    	try{
 			
-	    		HttpSession session = request.getSession();
-				Usuario usuarioLogueado = (Usuario)session.getAttribute(SigproConstante.USUARIO_SESSION);
+//	    		HttpSession session = request.getSession();
+//				Usuario usuarioLogueado = (Usuario)session.getAttribute(SigproConstante.USUARIO_SESSION);
+//				
+//				int idUsuario = usuarioLogueado.getIdUsuario();
+//	    		
+//	    		List<MiPedido> listaMisPedidos = pedidoEJB.consultarPedidosPorUsuario(idUsuario);
+//	    		request.setAttribute("listaMisPedidos", listaMisPedidos);
+//				request.getRequestDispatcher("../pages/promotor/listaPedidos.jsp").forward(request, response);
+				request.getRequestDispatcher("../pages/promotor/consultaMisPedidos.jsp").forward(request, response);
 				
-				int idUsuario = usuarioLogueado.getIdUsuario();
-	    		
-	    		List<MiPedido> listaMisPedidos = pedidoEJB.consultarPedidosPorUsuario(idUsuario);
-	    		request.setAttribute("listaMisPedidos", listaMisPedidos);
-				request.getRequestDispatcher("../pages/promotor/listaPedidos.jsp").forward(request, response);
 				
 	    	}catch(Exception e){
 	    		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
@@ -522,6 +527,39 @@ public class PedidoServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
 		}
 	}
+	
+	private void consultarPedidosPorMesYUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    	final String METHOD_NAME = "[consultarPedidosPorMesYUsuario]";
+    	logger.info(CLASS_NAME+"-"+METHOD_NAME);
+    	
+    	try{
+		
+    		HttpSession session = request.getSession();
+			Usuario usuarioLogueado = (Usuario)session.getAttribute(SigproConstante.USUARIO_SESSION);
+			
+			int idUsuario = usuarioLogueado.getIdUsuario();
+    		
+			int mes = Integer.parseInt(request.getParameter("idMesMisPedidos"));
+			
+			logger.info("mes:"+mes);
+
+    		List<MiPedido> listaMisPedidos = new ArrayList<>();
+			
+			if(mes==0){
+				/** Consulta todos los pedidos del promotor */
+				listaMisPedidos = pedidoEJB.consultarPedidosPorUsuario(idUsuario);
+			}else{
+				/** Consulta todos los pedidos del promotor en un mes determinado */
+				listaMisPedidos = pedidoEJB.consultarPedidosPorUsuario(idUsuario,mes);
+			}
+				
+    		request.setAttribute("listaMisPedidos", listaMisPedidos);
+			request.getRequestDispatcher("../pages/promotor/listaPedidos.jsp").forward(request, response);
+			
+    	}catch(Exception e){
+    		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+    	}
+    }
 	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

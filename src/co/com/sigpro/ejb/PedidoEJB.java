@@ -164,8 +164,16 @@ public class PedidoEJB extends DataBaseEJB{
 			logger.error(e.getMessage());
 			throw new LogicaException(e.getMessage(),e);
 		}
+	}
 	
-	
+	public List<MiPedido> consultarPedidosPorUsuario(final int idUsuario,final int mes) throws LogicaException{
+		try{
+			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);
+			return pedidoDAO.consultarPedidosPorUsuario(idUsuario,mes);
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
 	}
 	
 }

@@ -169,7 +169,8 @@
 						  	<th>Precio Descuento</th>
 						  	<th>Cantidad</th>
 						  	<th>Subtotal</th>
-						  	<th>Acciones</th>
+						  	<th>Eliminar</th>
+						  	<th>Editar Cant.</th>
 						  </tr>
 					  </thead>
 					  <tbody>
