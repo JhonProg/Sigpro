@@ -24,11 +24,13 @@
 			$("#dmMensajeCreacionPedido").dialog("open");
 			$("#dmMensajeCreacionPedido").html(getHTMLLoaging16(' Finalizando pedido'));
 			
+			var mesPedido = $("#mesDelPedido").val();
+			
 			$.ajax({
 				cache: false,
 				contentType: 'application/x-www-form-urlencoded; charset=iso-8859-1;', 
 		        type: 'POST',
-		        url: "${ctx}/page/pedido?action=pasarPedidoAVenta&idPedido="+idPedido,
+		        url: "${ctx}/page/pedido?action=pasarPedidoAVenta&idPedido="+idPedido+"&mesPedido="+mesPedido,
 		        dataType: "text",
 		        error: function(jqXHR, textStatus, errorThrown) {
 		        	var mensajeER = '<h3 style="color:red">'+jqXHR.statusText+'</h3>';
@@ -136,11 +138,28 @@
 					  </div>
 					  <br>
 					  
+					  <div id="divCampanaMes" align="center">
+					  	<b>Campaña (Mes) : </b> 
+						<select id="mesDelPedido" name="mesDelPedido">
+							<option value="1">Enero</option>
+							<option value="2">Febrero</option>
+							<option value="3">Marzo</option>
+							<option value="4">Abril</option>
+							<option value="5">Mayo</option>
+							<option value="6">Junio</option>
+							<option value="7">Julio</option>
+							<option value="8">Agosto</option>
+							<option value="9">Septiembre</option>
+							<option value="10">Octubre</option>
+							<option value="11">Noviembre</option>
+							<option value="12">Diciembre</option>
+						</select>
+					  </div>
+					  
 					  <div id="divBotonTerminarPedido" align="center">
 							<br>
 							<button type="submit" id="btnTerminarPedido" name="btnTerminarPedido" onclick="finalizarCreacionPedido(${idPedido});">Finalizar Pedido</button>
 						</div>
-					  
 					  </div>
 				  </c:otherwise>
 		</c:choose>

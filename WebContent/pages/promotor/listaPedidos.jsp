@@ -65,7 +65,7 @@
 						    <td><c:out value="ACTIVO"/></td>
 						    
 						  	<td valign="middle" align="center">
-							  		<span class="enlace" title="Agregar al carrito" onclick="alert('Funcionalidad en desarrollo');">
+							  		<span class="enlace" title="Ver detalle" onclick="alert('Funcionalidad en desarrollo');">
 							  			<img alt="Editar" src="${ctx}/imagen/ico-editar.gif">
 							  		</span>
 						  	</td>

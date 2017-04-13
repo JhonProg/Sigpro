@@ -306,9 +306,10 @@ public class PedidoServlet extends HttpServlet {
     		response.setContentType("text/plain");
     		PrintWriter salida = response.getWriter();
     		
-    		Integer idPedido = Integer.parseInt(request.getParameter("idPedido"));
+    		Integer idPedido  = Integer.parseInt(request.getParameter("idPedido"));
+    		Integer mesPedido = Integer.parseInt(request.getParameter("mesPedido"));
     		
-    		int actualizoPedido = pedidoEJB.actualizarEstadoPedido(idPedido,EstadoPedidoEnum.EN_VENTA.getIndex());
+    		int actualizoPedido = pedidoEJB.actualizarEstadoPedido(idPedido,EstadoPedidoEnum.EN_VENTA.getIndex(),mesPedido);
     		
     		if(actualizoPedido>0){
     			salida.println(actualizoPedido);

@@ -17,52 +17,6 @@
 	<script type="text/javascript" src="${ctx}/js/jquery.fixedtable.js"></script>
 	<script type="text/javascript" src="${ctx}/js/jquery.dateformat.js"></script>	
 	
-	<%--
-	<link type="text/css" href="${ctx}/css/sigpro.css" rel="stylesheet" />			
-	<link type="text/css" href="${ctx}/css/jquery/jquery-ui-1.8.21.custom.css" rel="Stylesheet" />
-	<link type="text/css" href="${ctx}/css/jquery/jquery.multiselect.css" rel="Stylesheet" />
-	
-	<script type="text/javascript" src="${ctx}/js/jquery-1.7.2.min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery-ui-1.8.21.custom.min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.validate.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.tablesorter.min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.fixedtableheader.min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.fixedtable.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.hotkeys-0.7.9.min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.dateformat.js"></script>	
-
-	<script type="text/javascript" src="${ctx}/js/graft/highcharts-custom.js"></script>
-	<script type="text/javascript" src="${ctx}/js/cvi_text_lib.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.flipv.js"></script>
-	<script type="text/javascript" src="${ctx}/js/ui.dropdownchecklist-1.4-min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.multiselect.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.multiselect.filter.js"></script>
-	
-	<link href='${ctx}/js/qtip/jquery.qtip.css' rel='stylesheet' />
-	<script src='${ctx}/js/qtip/jquery.qtip.js'></script>
-	
-	<link href='${ctx}/fullcalendar-2.2.6/fullcalendar.css' rel='stylesheet' />
-	<script src='${ctx}/fullcalendar-2.2.6/lib/moment.min.js'></script>
-	<script src='${ctx}/fullcalendar-2.2.6/fullcalendar.min.js'></script>
-	<script src='${ctx}/fullcalendar-2.2.6/lang-all.js'></script>
-	
-	<link type="text/css" href="${ctx}/css/jquery/jquery.multiselect.css" rel="Stylesheet" />
-	<script type="text/javascript" src="${ctx}/js/ui.dropdownchecklist-1.4-min.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.multiselect.js"></script>
-	<script type="text/javascript" src="${ctx}/js/jquery.multiselect.filter.js"></script>
-	
-	
-	<script type="text/javascript" src="${ctx}/js/croppic.js"></script>
-	<link rel="stylesheet" href="${ctx}/css/croppic.css">
-	
-	
-	<script type="text/javascript" src="${ctx}/restive.js-master/restive.min.js"></script>
-	
-	<script type="text/javascript" src="${ctx}/Animated-Circle/src/jquery-asPieProgress.js"></script>
-	<link rel="stylesheet" href="${ctx}/Animated-Circle/css/progress.css">
-	<script type="text/javascript" src="${ctx}/Animated-Circle/src/jquery-asPieProgress.js"></script>
-	<link rel="stylesheet" href="${ctx}/Animated-Circle/css/progress.css">
---%>
 <script type="text/javascript">
 
 

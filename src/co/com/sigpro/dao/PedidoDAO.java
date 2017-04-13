@@ -14,14 +14,8 @@ import co.com.sigpro.bean.MiPedido;
 import co.com.sigpro.bean.Pedido;
 import co.com.sigpro.bean.PedidoDetalle;
 import co.com.sigpro.bean.Producto;
-import co.com.sigpro.bean.ProductoCategoria;
-import co.com.sigpro.bean.Rol;
-import co.com.sigpro.bean.TipoDocumento;
-import co.com.sigpro.bean.Usuario;
-import co.com.sigpro.constante.EstadoEnum;
 import co.com.sigpro.constante.EstadoPedidoEnum;
 import co.com.sigpro.exception.DatoException;
-import co.com.sigpro.exception.LogicaException;
 import co.com.sigpro.util.Log;
 
 
@@ -215,7 +209,7 @@ public class PedidoDAO extends DataBaseDAO{
 	}
 	
 	
-	public int actualizarEstadoPedido(final int idPedido,final int estadoNuevo) throws DatoException {
+	public int actualizarEstadoPedido(final int idPedido,final int estadoNuevo,final int mes) throws DatoException {
 		int actualizado = 0;
 		final String METHOD_NAME = "[actualizarEstadoPedido]";
 		logger.info(CLASS_NAME+"-"+METHOD_NAME);
@@ -224,7 +218,7 @@ public class PedidoDAO extends DataBaseDAO{
 
 			StringBuffer ACTUALIZACION = new StringBuffer();
 			
-			ACTUALIZACION.append(" UPDATE pedido SET idpedidoestado=? WHERE idpedido=? ");
+			ACTUALIZACION.append(" UPDATE pedido SET idpedidoestado=?,mes=?,fechacreacion=now() WHERE idpedido=? ");
 			
 			logger.info(ACTUALIZACION.toString());
 			
@@ -232,7 +226,8 @@ public class PedidoDAO extends DataBaseDAO{
 			preparedStatement = conexion.prepareStatement(ACTUALIZACION.toString(),Statement.RETURN_GENERATED_KEYS);
 		
 			preparedStatement.setInt(1, estadoNuevo);
-			preparedStatement.setInt(2, idPedido);
+			preparedStatement.setInt(2, mes);
+			preparedStatement.setInt(3, idPedido);
 			
 			actualizado = actualizado + preparedStatement.executeUpdate();
 			
