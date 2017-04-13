@@ -69,6 +69,39 @@
      	} 
 	}
 	
+	function eliminarProductoDelCarrito(idPedido,idProducto){
+		if(confirm("¿Está seguro de que desea ELIMINAR el producto ["+idProducto+"] de este pedido?")){
+			
+			$("#dmMensajeCreacionPedido").dialog("open");
+			$("#dmMensajeCreacionPedido").html(getHTMLLoaging16(' Eliminando producto...'));
+			
+			$.ajax({
+				cache: false,
+				contentType: 'application/x-www-form-urlencoded; charset=iso-8859-1;', 
+		        type: 'POST',
+		        url: "${ctx}/page/pedido?action=eliminarProductoDelCarrito&idPedido="+idPedido+"&idProducto="+idProducto,
+		        dataType: "text",
+		        error: function(jqXHR, textStatus, errorThrown) {
+		        	var mensajeER = '<h3 style="color:red">'+jqXHR.statusText+'</h3>';
+		         	$("#dmMensajeCreacionPedido").html(mensajeER);
+		        },
+		        success: function(data) {
+		        	
+		        	if(validarEntero(data)){
+		        		var mensajeOK = '<h3 style="color:blue">El producto se ha eliminado...</h3>';
+			         	$("#dmMensajeCreacionPedido").html(mensajeOK);
+		        		$("#dmCarritoCompras").dialog("close");        		
+		        	}else{
+		        		var mensajeER = '<h3 style="color:red">No se ha podido eliminar el producto.Vuelva a intentarlo.</h3>';
+			         	$("#dmMensajeCreacionPedido").html(mensajeER);
+		        	}
+		        	
+		        	
+		        }
+		    });
+		}
+	}
+	
 </script>
 <div align="left" >
 
@@ -127,11 +160,11 @@
 							    <td><c:out value="${carrito.producto.subTotal}"/></td>
 							    
 							  	<td valign="middle" align="center">
-							  		<span class="enlace" title="Quitar al carrito" onclick="alert('Funcionalidad en desarrollo.');">
-							  			<img alt="Quitar" src="${ctx}/imagen/ico-editar.gif">
+							  		<span class="enlace" title="Quitar del carrito" onclick="eliminarProductoDelCarrito(${idPedido},${carrito.producto.idProducto});">
+							  			<img alt="Quitar" src="${ctx}/imagen/deshabilitar.png">
 							  		</span>
 							  	</td>
-							  	</tr>			 
+							  </tr>			 
 						  	</c:forEach>	
 					  </tbody>
 					  </table>

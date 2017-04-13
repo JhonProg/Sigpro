@@ -91,6 +91,15 @@ public class PedidoServlet extends HttpServlet {
 				case "misPedidos":
 					consultarMisPedidos(request, response);
 					break;
+				case "consultarDetallePedido":
+					consultarDetallePedido(request, response);
+					break;
+				case "cambiarEstadoPedido":
+					cambiarEstadoPedido(request, response);
+					break;
+				case "eliminarProductoDelCarrito":
+					eliminarProductoDelCarrito(request, response);
+					break;
 				default:
 					break;
 			}
@@ -235,9 +244,6 @@ public class PedidoServlet extends HttpServlet {
     }
     
 
-
-    
-
 	private void consultarCarritoCompras(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		final String METHOD_NAME = "[consultarCarritoCompras]";
 		logger.info(CLASS_NAME+"-"+METHOD_NAME);
@@ -297,7 +303,7 @@ public class PedidoServlet extends HttpServlet {
 	}
 
 	
-	 private void pasarPedidoAVenta(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	private void pasarPedidoAVenta(HttpServletRequest request, HttpServletResponse response) throws IOException{
     	final String METHOD_NAME = "[pasarPedidoAVenta]";
     	logger.info(CLASS_NAME+"-"+METHOD_NAME);
     	
@@ -322,10 +328,9 @@ public class PedidoServlet extends HttpServlet {
     		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
     	}
     }
-	
 	 
 	 
-	   private void consultarMisPedidos(HttpServletRequest request, HttpServletResponse response) throws IOException{
+	private void consultarMisPedidos(HttpServletRequest request, HttpServletResponse response) throws IOException{
 	    	final String METHOD_NAME = "[consultarMisPedidos]";
 	    	logger.info(CLASS_NAME+"-"+METHOD_NAME);
 	    	
@@ -345,6 +350,76 @@ public class PedidoServlet extends HttpServlet {
 	    	}
 	    }
 	 
+	
+	private void consultarDetallePedido(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    	final String METHOD_NAME = "[consultarDetallePedido]";
+    	logger.info(CLASS_NAME+"-"+METHOD_NAME);
+    	
+    	try{
+    		List<Carrito> listaPedidoDetalle = new ArrayList<>();
+    		
+    		int idPedido = Integer.parseInt(request.getParameter("idPedido"));
+    		listaPedidoDetalle = pedidoEJB.consultarCarritoDetalle(idPedido);
+			
+			final int elementosCarrito = listaPedidoDetalle.size();
+			
+			if(elementosCarrito>0){
+				double total = 0;
+				
+				for(Carrito c:listaPedidoDetalle){
+					Producto p = c.getProducto();
+					double subTotal = 0;
+					if(p.getPrecioDescuento()>0){
+						subTotal = p.getCantidad()*p.getPrecioDescuento();
+						p.setSubTotal(subTotal);
+						total=total+subTotal;
+					}else{
+						subTotal = p.getCantidad()*p.getPrecioUnitario();
+						p.setSubTotal(subTotal);
+						total=total+subTotal;
+					}
+					
+				}
+				
+				request.setAttribute("idPedido", idPedido);
+				request.setAttribute("total", total);
+				request.setAttribute("listaPedidoDetalle", listaPedidoDetalle);
+	    		request.getRequestDispatcher("../pages/promotor/pedidoDetalle.jsp").forward(request, response);
+			}else{
+				logger.info("NO se encontro el detalle del pedido ["+idPedido+"]");
+				throw new Exception("NO se encontro el detalle del pedido ["+idPedido+"]. Intente mas tarde.");
+			}
+    	}catch(Exception e){
+    		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+    	}
+    }
+	
+	
+	private void cambiarEstadoPedido(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		try{
+			response.setContentType("text/plain");
+			PrintWriter salida = response.getWriter();
+			
+			Integer idPedido            = Integer.parseInt(request.getParameter("idPedido"));
+    		Integer idNuevoEstadoPedido = Integer.parseInt(request.getParameter("idNuevoEstadoPedido"));
+			
+    		int actualizados = pedidoEJB.actualizarEstadoPedido(idPedido, idNuevoEstadoPedido);
+    		
+    		if(actualizados>0){
+    			salida.println(actualizados);
+    		}else{
+    			throw new Exception("No fue posible actualizar el estado del pedido. Intentelo más tarde.");
+    		}
+    		
+		}catch(Exception e){
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

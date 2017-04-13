@@ -97,6 +97,17 @@ public class PedidoEJB extends DataBaseEJB{
 	
 	}
 	
+	public int actualizarEstadoPedido(final int idPedido,final int estadoNuevo) throws LogicaException{
+		try{
+			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);
+			return pedidoDAO.actualizarEstadoPedido(idPedido,estadoNuevo);
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	
+	}
+	
 	public Pedido consultarUltimoPedidoCreadoPorIdUsuarioEstadoPedido(final int idPedido,final int estado,final int idCliente) throws LogicaException{
 		try{
 			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);

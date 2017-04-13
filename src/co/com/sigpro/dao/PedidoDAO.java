@@ -253,6 +253,49 @@ public class PedidoDAO extends DataBaseDAO{
 		return actualizado;
 	}	
 	
+	public int actualizarEstadoPedido(final int idPedido,final int estadoNuevo) throws DatoException {
+		int actualizado = 0;
+		final String METHOD_NAME = "[actualizarEstadoPedido]";
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		try {
+
+			StringBuffer ACTUALIZACION = new StringBuffer();
+			
+			ACTUALIZACION.append(" UPDATE pedido SET idpedidoestado=? WHERE idpedido=? ");
+			
+			logger.info(ACTUALIZACION.toString());
+			
+			conexion = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(ACTUALIZACION.toString(),Statement.RETURN_GENERATED_KEYS);
+		
+			preparedStatement.setInt(1, estadoNuevo);
+			preparedStatement.setInt(2, idPedido);
+			
+			actualizado = actualizado + preparedStatement.executeUpdate();
+			
+			if(actualizado==0){
+				throw new DatoException("No fue posible actualizar el pedido.");
+			}else{
+				resultSet = preparedStatement.getGeneratedKeys();
+				resultSet.next();
+				actualizado = resultSet.getInt(1);
+			}
+			
+			logger.info("estatus:["+actualizado+"]");
+			
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		return actualizado;
+	}	
+	
 	public int actualizarCantidadProductoEnInventario(final int idProducto,final int cantidad) throws DatoException {
 		int actualizado = 0;
 		final String METHOD_NAME = "[actualizarCantidadProductoEnInventario]";

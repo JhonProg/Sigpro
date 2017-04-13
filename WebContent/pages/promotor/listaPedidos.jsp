@@ -3,8 +3,39 @@
 
 	$(document).ready(function() {
 		
+		$("#dmDetallePedido").dialog({   				
+			width: 600,
+			height: 400,   				
+			modal: true,
+			autoOpen: false,
+			resizable: true
+		});
+		
+		
+		
 	});
 	
+	function verDetallePedido(idPedido){
+		console.log("verDetallePedido()");
+		$("#dmDetallePedido").dialog("open");
+		$("#dmDetallePedido").html(getHTMLLoaging16('Consultando detalle de pedido...'));
+		
+		$.ajax({
+			cache: false,
+			contentType: 'application/x-www-form-urlencoded; charset=iso-8859-1;', 
+	        type: 'POST',
+	        url: "${ctx}/page/pedido?action=consultarDetallePedido&idPedido="+idPedido,
+	        dataType: "text",
+	        error: function(jqXHR, textStatus, errorThrown) {
+	        	var mensajeER = '<h3 style="color:red">'+jqXHR.statusText+'</h3>';
+	         	$("#dmDetallePedido").html(mensajeER);
+	        },
+	        success: function(data) {
+	        	$("#dmDetallePedido").html(data);
+	        }
+	    });
+	}
+		
 </script>
 <div align="left" >
 
@@ -65,7 +96,7 @@
 						    <td><c:out value="ACTIVO"/></td>
 						    
 						  	<td valign="middle" align="center">
-							  		<span class="enlace" title="Ver detalle" onclick="alert('Funcionalidad en desarrollo');">
+							  		<span class="enlace" title="Ver detalle" onclick="verDetallePedido(${miPedido.pedido.idpedido});">
 							  			<img alt="Editar" src="${ctx}/imagen/ico-editar.gif">
 							  		</span>
 						  	</td>
@@ -80,3 +111,4 @@
 </c:choose>
 </fieldset>
 </div>
+<div id="dmDetallePedido" title="Detalle Pedido"></div>
