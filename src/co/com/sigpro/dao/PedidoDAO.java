@@ -208,6 +208,49 @@ public class PedidoDAO extends DataBaseDAO{
 		return actualizado;
 	}
 	
+	public int actualizarCantidadProducto(final int idPedido,final int idProducto,final int cantidad,final boolean modifica) throws DatoException {
+		int actualizado = 0;
+		final String METHOD_NAME = "[actualizarCantidadProducto]";
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		try {
+
+			StringBuffer ACTUALIZACION = new StringBuffer();
+			
+			ACTUALIZACION.append(" UPDATE pedido_detalle SET cantidad=? WHERE idpedido=? AND idproducto=? ");
+			
+			logger.info(ACTUALIZACION.toString());
+			
+			conexion = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(ACTUALIZACION.toString(),Statement.RETURN_GENERATED_KEYS);
+		
+			preparedStatement.setInt(1, cantidad);
+			preparedStatement.setInt(2, idPedido);
+			preparedStatement.setInt(3, idProducto);
+			
+			actualizado = actualizado + preparedStatement.executeUpdate();
+			
+			if(actualizado==0){
+				throw new DatoException("No fue posible registrar al nuevo pedido.");
+			}else{
+				resultSet = preparedStatement.getGeneratedKeys();
+				resultSet.next();
+				actualizado = resultSet.getInt(1);
+			}
+			
+			logger.info("estatus:["+actualizado+"]");
+			
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		return actualizado;
+	}
 	
 	public int actualizarEstadoPedido(final int idPedido,final int estadoNuevo,final int mes) throws DatoException {
 		int actualizado = 0;
@@ -296,7 +339,9 @@ public class PedidoDAO extends DataBaseDAO{
 		return actualizado;
 	}	
 	
-	public int actualizarCantidadProductoEnInventario(final int idProducto,final int cantidad) throws DatoException {
+	
+	
+	public int actualizarCantidadProductoEnInventario(final int idProducto,final int cantidad,final boolean aumentaProducto) throws DatoException {
 		int actualizado = 0;
 		final String METHOD_NAME = "[actualizarCantidadProductoEnInventario]";
 		logger.info(CLASS_NAME+"-"+METHOD_NAME);
@@ -305,7 +350,12 @@ public class PedidoDAO extends DataBaseDAO{
 
 			StringBuffer ACTUALIZACION = new StringBuffer();
 			
-			ACTUALIZACION.append(" UPDATE producto SET cantidad=cantidad-? WHERE idproducto=? ");
+			if(aumentaProducto){
+				ACTUALIZACION.append(" UPDATE producto SET cantidad=cantidad+? WHERE idproducto=? ");
+			}else{
+				ACTUALIZACION.append(" UPDATE producto SET cantidad=cantidad-? WHERE idproducto=? ");
+			}
+			
 			
 			logger.info(ACTUALIZACION.toString());
 			
@@ -313,6 +363,50 @@ public class PedidoDAO extends DataBaseDAO{
 			preparedStatement = conexion.prepareStatement(ACTUALIZACION.toString(),Statement.RETURN_GENERATED_KEYS);
 		
 			preparedStatement.setInt(1, cantidad);
+			preparedStatement.setInt(2, idProducto);
+			
+			actualizado = actualizado + preparedStatement.executeUpdate();
+			
+			if(actualizado==0){
+				throw new DatoException("No fue posible actualizar el inventario.");
+			}else{
+				resultSet = preparedStatement.getGeneratedKeys();
+				resultSet.next();
+				actualizado = resultSet.getInt(1);
+			}
+			
+			logger.info("estatus:["+actualizado+"]");
+			
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		return actualizado;
+	}	
+	
+	
+	public int eliminarProductoDePedido(final int idPedido,final int idProducto) throws DatoException {
+		int actualizado = 0;
+		final String METHOD_NAME = "[eliminarProductoDePedido]";
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		try {
+
+			StringBuffer ACTUALIZACION = new StringBuffer();
+			
+			ACTUALIZACION.append(" DELETE FROM pedido_detalle WHERE idpedido=? AND idproducto=? ");
+			
+			logger.info(ACTUALIZACION.toString());
+			
+			conexion = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(ACTUALIZACION.toString(),Statement.RETURN_GENERATED_KEYS);
+		
+			preparedStatement.setInt(1, idPedido);
 			preparedStatement.setInt(2, idProducto);
 			
 			actualizado = actualizado + preparedStatement.executeUpdate();

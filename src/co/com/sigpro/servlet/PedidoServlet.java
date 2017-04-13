@@ -100,6 +100,11 @@ public class PedidoServlet extends HttpServlet {
 				case "eliminarProductoDelCarrito":
 					eliminarProductoDelCarrito(request, response);
 					break;
+				case "obtenerCantidadPorProducto":
+					obtenerCantidadPorProducto(request, response);
+				case "actualizarCantidadDeProductoEnPedido":
+					actualizarCantidadDeProductoEnPedido(request, response);
+					break;
 				default:
 					break;
 			}
@@ -224,7 +229,7 @@ public class PedidoServlet extends HttpServlet {
     		
     		if(pedidoDetalleRegistradoActualizado>0){
     			
-    			int actualizoInventario = pedidoEJB.actualizarCantidadProductoEnInventario(idProducto,cantidad);
+    			int actualizoInventario = pedidoEJB.actualizarCantidadProductoEnInventario(idProducto,cantidad,false);
     			
     			if(actualizoInventario>0){
     				logger.info("inventario actualizado exitosamente...");
@@ -418,7 +423,105 @@ public class PedidoServlet extends HttpServlet {
 	}
 	
 	
+	private void eliminarProductoDelCarrito(HttpServletRequest request, HttpServletResponse response)throws IOException{
+		try{
+			response.setContentType("text/plain");
+			PrintWriter salida = response.getWriter();
+			
+			Integer idPedido   = Integer.parseInt(request.getParameter("idPedido"));
+    		Integer idProducto = Integer.parseInt(request.getParameter("idProducto"));
+    		Integer cantidad   = Integer.parseInt(request.getParameter("cantidad"));
+    		
+    		int eliminados = pedidoEJB.eliminarProductoDePedido(idPedido, idProducto);
+    		
+    		if(eliminados>0){
+    			int actualizados = pedidoEJB.actualizarCantidadProductoEnInventario(idProducto, cantidad,true);
+    			
+    			if(actualizados>0){
+    				salida.println(eliminados);
+    			}else{
+    				logger.error("Se eliminó el producto del carrito, pero no fue posible actualizar el inventario..");
+    			}
+    			
+    		}else{
+    			throw new Exception("No fue posible actualizar el estado del pedido. Intentelo más tarde.");
+    		}
+    		
+		}catch(Exception e){
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+		}
+	}
 	
+	
+	private void obtenerCantidadPorProducto(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    	final String METHOD_NAME = "[obtenerCantidadPorProducto]";
+    	logger.info(CLASS_NAME+"-"+METHOD_NAME);
+    	
+    	try{
+    		
+    		String idPedido        = request.getParameter("idPedido");
+    		Integer idProducto     = Integer.parseInt(request.getParameter("idProducto"));
+    		Integer cantidadActual = Integer.parseInt(request.getParameter("cantidadActual"));
+    		
+    		int cantidad = productoEJB.consultarCantidadDisponibleDeUnProducto(idProducto);
+    		
+    		request.setAttribute("idPedido", idPedido);
+    		request.setAttribute("idProducto", idProducto);
+    		request.setAttribute("cantidadActual", cantidadActual);
+    		request.setAttribute("cantidadDisponible", cantidad+cantidadActual);
+    		
+    		request.getRequestDispatcher("../pages/promotor/cambiarCantidadProducto.jsp").forward(request, response);
+    		
+    	}catch(Exception e){
+    		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+    	}
+    }
+	
+	private void actualizarCantidadDeProductoEnPedido(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		try{
+			response.setContentType("text/plain");
+			PrintWriter salida = response.getWriter();
+			
+			Integer idPedido        = Integer.parseInt(request.getParameter("idPedido"));
+			Integer idProducto      = Integer.parseInt(request.getParameter("idProducto"));
+    		Integer cantidadActual  = Integer.parseInt(request.getParameter("cantidadActual"));
+    		Integer cantidadDeseada = Integer.parseInt(request.getParameter("cantidadDeseada"));
+    		
+    		int cantidadActualizar     = 0;//cantidadActual-cantidadDeseada;
+    		boolean aumentarInventario = false;
+    		
+    		if(cantidadDeseada>cantidadActual){
+    			aumentarInventario = false;
+    			cantidadActualizar = cantidadDeseada-cantidadActual;
+    		}else{
+    			aumentarInventario = true;
+    			cantidadActualizar = cantidadActual-cantidadDeseada;
+    		}
+    		    		
+    		logger.info("cantidadActual:["+cantidadActual+"] cantidadDeseada:["+cantidadDeseada+"] cantidadActualizar:["+cantidadActualizar+"]");
+    		
+    		int actualizados = pedidoEJB.actualizarCantidadProducto(idPedido,idProducto,cantidadDeseada,true);
+    		    		
+    		if(actualizados>0){
+    			
+    			int actualizoInventario = pedidoEJB.actualizarCantidadProductoEnInventario(idProducto,cantidadActualizar,aumentarInventario);
+    			
+    			if(actualizoInventario>0){
+    				salida.println(actualizoInventario);
+    			}else{
+    				throw new Exception("No fue posible actualizar la cantidad del producto en el inventario. Intentelo más tarde.");
+    			}
+    			
+    		}else{
+    			throw new Exception("No fue posible actualizar la cantidad del producto. Intentelo más tarde.");
+    		}
+    		
+		}catch(Exception e){
+			logger.error(e.getMessage());
+			response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+		}
+	}
 	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

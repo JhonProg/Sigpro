@@ -312,6 +312,41 @@ public class ProductoDAO extends DataBaseDAO{
 	}
 
 	
+	public int consultarCantidadDisponibleDeUnProducto(final Integer idProducto) throws DatoException{
+		final String METHOD_NAME = "[consultarCantidadDisponibleDeUnProducto]";
+		
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		StringBuffer CONSULTA = new StringBuffer();
+		int cantidadProducto  = 0;		
+		
+		CONSULTA.append(" SELECT cantidad FROM producto WHERE idproducto=?");
+				
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			preparedStatement.setInt(1, idProducto);
+			resultSet         = preparedStatement.executeQuery();
+			
+			if(resultSet.next()){
+				cantidadProducto = resultSet.getInt("cantidad");
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		
+		return cantidadProducto;
+	}
+	
 	public int editarProducto(final Producto productoEdicion) throws DatoException {
 		Integer estatus = 0;
 		int columna = 1;

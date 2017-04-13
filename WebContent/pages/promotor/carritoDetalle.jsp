@@ -13,6 +13,14 @@
 			resizable: true
 		});
 		
+		
+		$("#dmModificarCantidadProducto").dialog({   				
+			width: 400,
+			height: 200,   				
+			modal: true,
+			autoOpen: false,
+			resizable: true
+		});
 	});
 	
 	function finalizarCreacionPedido(idPedido){
@@ -69,7 +77,7 @@
      	} 
 	}
 	
-	function eliminarProductoDelCarrito(idPedido,idProducto){
+	function eliminarProductoDelCarrito(idPedido,idProducto,cantidad){
 		if(confirm("¿Está seguro de que desea ELIMINAR el producto ["+idProducto+"] de este pedido?")){
 			
 			$("#dmMensajeCreacionPedido").dialog("open");
@@ -79,27 +87,45 @@
 				cache: false,
 				contentType: 'application/x-www-form-urlencoded; charset=iso-8859-1;', 
 		        type: 'POST',
-		        url: "${ctx}/page/pedido?action=eliminarProductoDelCarrito&idPedido="+idPedido+"&idProducto="+idProducto,
+		        url: "${ctx}/page/pedido?action=eliminarProductoDelCarrito&idPedido="+idPedido+"&idProducto="+idProducto+"&cantidad="+cantidad,
 		        dataType: "text",
 		        error: function(jqXHR, textStatus, errorThrown) {
 		        	var mensajeER = '<h3 style="color:red">'+jqXHR.statusText+'</h3>';
 		         	$("#dmMensajeCreacionPedido").html(mensajeER);
 		        },
 		        success: function(data) {
-		        	
 		        	if(validarEntero(data)){
 		        		var mensajeOK = '<h3 style="color:blue">El producto se ha eliminado...</h3>';
 			         	$("#dmMensajeCreacionPedido").html(mensajeOK);
 		        		$("#dmCarritoCompras").dialog("close");        		
 		        	}else{
-		        		var mensajeER = '<h3 style="color:red">No se ha podido eliminar el producto.Vuelva a intentarlo.</h3>';
+		        		var mensajeER = '<h3 style="color:red">No se ha podido eliminar el producto. Vuelva a intentarlo.</h3>';
 			         	$("#dmMensajeCreacionPedido").html(mensajeER);
 		        	}
-		        	
-		        	
 		        }
 		    });
 		}
+	}
+	
+	function cambiarCantidadDeProducto(idPedido,idProducto,cantidadActual){
+		$("#dmModificarCantidadProducto").dialog("open");
+		$("#dmModificarCantidadProducto").html(getHTMLLoaging16(' Cargando...'));
+		
+		$.ajax({
+			cache: false,
+			contentType: 'application/x-www-form-urlencoded; charset=iso-8859-1;', 
+	        type: 'POST',
+	        url: "${ctx}/page/pedido?action=obtenerCantidadPorProducto&idProducto="+idProducto+"&idPedido="+idPedido+"&cantidadActual="+cantidadActual,
+	        dataType: "text",
+	        error: function(jqXHR, textStatus, errorThrown) {
+	        	var mensajeER = '<h3 style="color:red">'+jqXHR.statusText+'</h3>';
+	         	$("#dmModificarCantidadProducto").html(mensajeER);
+	        },
+	        success: function(data) {
+		         $("#dmModificarCantidadProducto").html(data);
+	        }
+	    });
+		
 	}
 	
 </script>
@@ -160,8 +186,13 @@
 							    <td><c:out value="${carrito.producto.subTotal}"/></td>
 							    
 							  	<td valign="middle" align="center">
-							  		<span class="enlace" title="Quitar del carrito" onclick="eliminarProductoDelCarrito(${idPedido},${carrito.producto.idProducto});">
+							  		<span class="enlace" title="Quitar del carrito" onclick="eliminarProductoDelCarrito(${idPedido},${carrito.producto.idProducto},${carrito.producto.cantidad});">
 							  			<img alt="Quitar" src="${ctx}/imagen/deshabilitar.png">
+							  		</span>
+							  	</td>
+							  	<td valign="middle" align="center">
+							  		<span class="enlace" title="Cambiar cantidad" onclick="cambiarCantidadDeProducto(${idPedido},${carrito.producto.idProducto},${carrito.producto.cantidad});">
+							  			<img alt="Cambiar cantidad" src="${ctx}/imagen/ico-editar.gif">
 							  		</span>
 							  	</td>
 							  </tr>			 
@@ -201,3 +232,4 @@
 
 </div>
 <div id="dmMensajeCreacionPedido" title="Pedido"></div>
+<div id="dmModificarCantidadProducto" title="Pedido"></div>

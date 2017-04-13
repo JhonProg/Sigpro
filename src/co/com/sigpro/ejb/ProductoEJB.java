@@ -81,4 +81,14 @@ public class ProductoEJB extends DataBaseEJB {
 	}
 	
 	
+	
+	public int consultarCantidadDisponibleDeUnProducto(final Integer idProducto) throws LogicaException{
+		try{
+			ProductoDAO productoDAO = new ProductoDAO(ds_consulta);
+			return productoDAO.consultarCantidadDisponibleDeUnProducto(idProducto);
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	}
 }

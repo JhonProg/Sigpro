@@ -71,12 +71,21 @@ public class PedidoEJB extends DataBaseEJB{
 	
 	}
 	
-	
-
-	public int actualizarCantidadProductoEnInventario(final int idProducto,final int cantidad) throws LogicaException{
+	public int actualizarCantidadProducto(final int idPedido,final int idProducto,final int cantidad,final boolean modifica) throws LogicaException{
 		try{
 			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);
-			return pedidoDAO.actualizarCantidadProductoEnInventario(idProducto,cantidad);
+			return pedidoDAO.actualizarCantidadProducto(idPedido,idProducto,cantidad,modifica);
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	
+	}
+
+	public int actualizarCantidadProductoEnInventario(final int idProducto,final int cantidad,final boolean aumentaProducto) throws LogicaException{
+		try{
+			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);
+			return pedidoDAO.actualizarCantidadProductoEnInventario(idProducto,cantidad,aumentaProducto);
 		}catch(DatoException e){
 			logger.error(e.getMessage());
 			throw new LogicaException(e.getMessage(),e);
@@ -101,6 +110,18 @@ public class PedidoEJB extends DataBaseEJB{
 		try{
 			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);
 			return pedidoDAO.actualizarEstadoPedido(idPedido,estadoNuevo);
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	
+	}
+	
+	
+	public int eliminarProductoDePedido(final int idPedido,final int idProducto) throws LogicaException{
+		try{
+			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);
+			return pedidoDAO.eliminarProductoDePedido(idPedido,idProducto);
 		}catch(DatoException e){
 			logger.error(e.getMessage());
 			throw new LogicaException(e.getMessage(),e);

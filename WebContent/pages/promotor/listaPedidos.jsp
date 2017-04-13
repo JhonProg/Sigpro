@@ -16,7 +16,6 @@
 	});
 	
 	function verDetallePedido(idPedido){
-		console.log("verDetallePedido()");
 		$("#dmDetallePedido").dialog("open");
 		$("#dmDetallePedido").html(getHTMLLoaging16('Consultando detalle de pedido...'));
 		
