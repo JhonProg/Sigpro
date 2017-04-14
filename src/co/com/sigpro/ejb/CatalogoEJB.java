@@ -8,6 +8,7 @@ import co.com.sigpro.bean.ProductoCategoria;
 import co.com.sigpro.bean.ProductoEstado;
 import co.com.sigpro.bean.Rol;
 import co.com.sigpro.bean.TipoDocumento;
+import co.com.sigpro.bean.Usuario;
 import co.com.sigpro.dao.CatalogoDAO;
 import co.com.sigpro.exception.DatoException;
 import co.com.sigpro.exception.LogicaException;
@@ -71,6 +72,17 @@ public class CatalogoEJB extends DataBaseEJB{
 		try{
 			CatalogoDAO catalogoDAO = new CatalogoDAO(ds_consulta);
 			return catalogoDAO.consultarProductoEstados();
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	}
+	
+	
+	public List<Usuario> consultarUsuariosPorRol(final int rol) throws LogicaException{
+		try{
+			CatalogoDAO catalogoDAO = new CatalogoDAO(ds_consulta);
+			return catalogoDAO.consultarUsuariosPorRol(rol);
 		}catch(DatoException e){
 			logger.error(e.getMessage());
 			throw new LogicaException(e.getMessage(),e);

@@ -176,4 +176,23 @@ public class PedidoEJB extends DataBaseEJB{
 		}
 	}
 	
+	public List<MiPedido> consultarPedidosPorMes(final int mes) throws LogicaException{
+		try{
+			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);
+			return pedidoDAO.consultarPedidosPorMes(mes);
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	}
+	
+	public List<MiPedido> consultarTodosLosPedidos() throws LogicaException{
+		try{
+			PedidoDAO pedidoDAO = new PedidoDAO(ds_consulta);
+			return pedidoDAO.consultarTodosLosPedidos();
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	}
 }

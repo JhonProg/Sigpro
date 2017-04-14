@@ -21,6 +21,7 @@ import co.com.sigpro.bean.ProductoCategoria;
 import co.com.sigpro.bean.TipoDocumento;
 import co.com.sigpro.bean.Usuario;
 import co.com.sigpro.constante.EstadoPedidoEnum;
+import co.com.sigpro.constante.RolConstante;
 import co.com.sigpro.constante.SigproConstante;
 import co.com.sigpro.ejb.CatalogoEJB;
 import co.com.sigpro.ejb.PedidoEJB;
@@ -107,6 +108,12 @@ public class PedidoServlet extends HttpServlet {
 					break;
 				case "consultarPedidosPorMesYUsuario":
 					consultarPedidosPorMesYUsuario(request, response);
+					break;
+				case "cargarConsultarPedido":
+					cargarConsultarPedido(request, response);
+					break;
+				case "consultarPedidosPorMesYPromotores":
+					consultarPedidosPorMesYPromotores(request, response);
 					break;
 				default:
 					break;
@@ -557,6 +564,61 @@ public class PedidoServlet extends HttpServlet {
 			request.getRequestDispatcher("../pages/promotor/listaPedidos.jsp").forward(request, response);
 			
     	}catch(Exception e){
+    		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+    	}
+    }
+	
+	private void cargarConsultarPedido(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		final String METHOD_NAME = "[cargarConsultarPedido]";
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		try{
+			
+			List<Usuario> listaPromotores = catalogoEJB.consultarUsuariosPorRol(RolConstante.PROMOTOR);
+			
+			request.setAttribute("listaPromotores", listaPromotores);
+			request.getRequestDispatcher("../pages/director/consultarPedidos.jsp").forward(request, response);
+			
+		}catch(Exception e){
+			response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+		}
+	}
+	
+	
+	private void consultarPedidosPorMesYPromotores(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    	final String METHOD_NAME = "[consultarPedidosPorMesYPromotores]";
+    	logger.info(CLASS_NAME+"-"+METHOD_NAME);
+    	
+    	try{
+				
+    		logger.info("1");
+			int mes     = Integer.parseInt(request.getParameter("idMes"));
+			logger.info("2");
+			int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+			
+			logger.info("mes:"+mes+" usuario:"+idUsuario);
+			
+    		List<MiPedido> listaMisPedidos = new ArrayList<>();
+    		logger.info("3");
+			if(mes==0 && idUsuario!=0){
+				/** Consulta todos los pedidos del promotor */
+				listaMisPedidos = pedidoEJB.consultarPedidosPorUsuario(idUsuario);
+			}if(mes==0 && idUsuario==0){
+				/** Todos los pedidos */
+				listaMisPedidos = pedidoEJB.consultarTodosLosPedidos();
+			}else if(mes!=0 && idUsuario!=0){
+				/** Consulta todos los pedidos del promotor en un mes determinado */
+				listaMisPedidos = pedidoEJB.consultarPedidosPorUsuario(idUsuario,mes);
+			}else if(mes!=0 && idUsuario==0){
+				/** Consulta todos los pedidos del promotor en un mes determinado */
+				listaMisPedidos = pedidoEJB.consultarPedidosPorMes(mes);
+			}
+				
+    		request.setAttribute("listaMisPedidos", listaMisPedidos);
+			request.getRequestDispatcher("../pages/director/listaPedidos.jsp").forward(request, response);
+			
+    	}catch(Exception e){
+    		logger.error(e.toString());
     		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
     	}
     }

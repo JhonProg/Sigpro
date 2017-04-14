@@ -732,4 +732,136 @@ public class PedidoDAO extends DataBaseDAO{
 		return misPedidos;
 	}
 	
+	
+	public List<MiPedido> consultarPedidosPorMes(final int mes) throws DatoException{
+		
+		final String METHOD_NAME   = "[consultarPedidosPorUsuario]";
+		List<MiPedido> misPedidos  = new ArrayList<>();
+		MiPedido miPedido          = null;
+		Pedido pedido              = null;
+		Cliente cliente            = null;
+						
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		StringBuffer CONSULTA = new StringBuffer();
+		
+		CONSULTA.append(" SELECT ");
+		CONSULTA.append(" pe.idpedido,pe.idpedidoestado,pe.idcliente,pe.idusuario,pe.observacion, ");
+		CONSULTA.append(" c.idcliente, c.idtipodocumento, c.numerodocumento, c.nombre, c.apellido, c.direccion, c.telefono, c.estado ");
+		CONSULTA.append(" FROM pedido pe,cliente c WHERE ");
+		CONSULTA.append(" pe.idcliente=c.idcliente ");
+		CONSULTA.append(" AND pe.mes=? ");
+				
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			preparedStatement.setInt(1,mes);
+			resultSet         = preparedStatement.executeQuery();
+						
+			while(resultSet.next()){
+				miPedido = new MiPedido();
+				pedido   = new Pedido();
+				cliente  = new Cliente();
+				
+				pedido.setIdpedido(resultSet.getInt("idpedido"));
+				pedido.setIdpedidoestado(resultSet.getInt("idpedidoestado"));
+				pedido.setIdcliente(resultSet.getInt("idcliente"));
+				pedido.setIdusuario(resultSet.getInt("idusuario"));
+				pedido.setObservacion(resultSet.getString("observacion"));
+				
+				cliente.setIdcliente(resultSet.getInt("idcliente"));
+				cliente.setIdTipoDocumento(resultSet.getInt("idtipodocumento"));
+				cliente.setNumeroDocumento(resultSet.getString("numerodocumento"));
+				cliente.setNombre(resultSet.getString("nombre"));
+				cliente.setApellido(resultSet.getString("apellido"));
+				cliente.setDireccion(resultSet.getString("direccion"));
+				cliente.setTelefono(resultSet.getString("telefono"));
+				cliente.setEstado(resultSet.getInt("estado"));
+				
+				miPedido.setPedido(pedido);
+				miPedido.setCliente(cliente);
+				
+				misPedidos.add(miPedido);
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		
+		return misPedidos;
+	}
+	
+	public List<MiPedido> consultarTodosLosPedidos() throws DatoException{
+		
+		final String METHOD_NAME   = "[consultarTodosLosPedidos]";
+		List<MiPedido> misPedidos  = new ArrayList<>();
+		MiPedido miPedido          = null;
+		Pedido pedido              = null;
+		Cliente cliente            = null;
+						
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		StringBuffer CONSULTA = new StringBuffer();
+		
+		CONSULTA.append(" SELECT ");
+		CONSULTA.append(" pe.idpedido,pe.idpedidoestado,pe.idcliente,pe.idusuario,pe.observacion, ");
+		CONSULTA.append(" c.idcliente, c.idtipodocumento, c.numerodocumento, c.nombre, c.apellido, c.direccion, c.telefono, c.estado ");
+		CONSULTA.append(" FROM pedido pe,cliente c ");
+		CONSULTA.append(" WHERE pe.idcliente=c.idcliente ");
+		
+				
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			resultSet         = preparedStatement.executeQuery();
+						
+			while(resultSet.next()){
+				miPedido = new MiPedido();
+				pedido   = new Pedido();
+				cliente  = new Cliente();
+				
+				pedido.setIdpedido(resultSet.getInt("idpedido"));
+				pedido.setIdpedidoestado(resultSet.getInt("idpedidoestado"));
+				pedido.setIdcliente(resultSet.getInt("idcliente"));
+				pedido.setIdusuario(resultSet.getInt("idusuario"));
+				pedido.setObservacion(resultSet.getString("observacion"));
+				
+				cliente.setIdcliente(resultSet.getInt("idcliente"));
+				cliente.setIdTipoDocumento(resultSet.getInt("idtipodocumento"));
+				cliente.setNumeroDocumento(resultSet.getString("numerodocumento"));
+				cliente.setNombre(resultSet.getString("nombre"));
+				cliente.setApellido(resultSet.getString("apellido"));
+				cliente.setDireccion(resultSet.getString("direccion"));
+				cliente.setTelefono(resultSet.getString("telefono"));
+				cliente.setEstado(resultSet.getInt("estado"));
+				
+				miPedido.setPedido(pedido);
+				miPedido.setCliente(cliente);
+				
+				misPedidos.add(miPedido);
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		
+		return misPedidos;
+	}
+	
 }

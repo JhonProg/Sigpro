@@ -10,6 +10,7 @@ import co.com.sigpro.bean.ProductoCategoria;
 import co.com.sigpro.bean.ProductoEstado;
 import co.com.sigpro.bean.Rol;
 import co.com.sigpro.bean.TipoDocumento;
+import co.com.sigpro.bean.Usuario;
 import co.com.sigpro.constante.EstadoEnum;
 import co.com.sigpro.exception.DatoException;
 import co.com.sigpro.util.Log;
@@ -222,4 +223,53 @@ public class CatalogoDAO extends DataBaseDAO{
 		return estados;
 	}
 	
+	
+	public List<Usuario> consultarUsuariosPorRol(final int rol) throws DatoException{
+		final String METHOD_NAME = "[consultarUsuariosPorRol]";
+		
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		List<Usuario> usuarios  = new ArrayList<>();
+		Usuario usuario         = null;
+		StringBuffer CONSULTA   = new StringBuffer();
+		
+		CONSULTA.append(" SELECT idusuario,idtipodocumento,idrol,numerodocumento,usuario,clave,nombre,apellido,estado FROM usuario WHERE idrol=? AND estado=?");
+		
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			preparedStatement.setInt(1, rol);
+			preparedStatement.setInt(2, EstadoEnum.ACTIVO.getIndex());
+			resultSet         = preparedStatement.executeQuery();
+						
+			while(resultSet.next()){
+				usuario =  new Usuario();
+				
+				usuario.setIdUsuario(resultSet.getInt("idusuario"));
+				usuario.setIdTipoDocumento(resultSet.getInt("idtipodocumento"));
+				usuario.setIdRol(resultSet.getInt("idrol"));
+				usuario.setNumeroDocumento(resultSet.getString("numerodocumento"));
+				usuario.setUsuario(resultSet.getString("usuario"));
+				usuario.setClave(resultSet.getString("clave"));
+				usuario.setNombre(resultSet.getString("nombre"));
+				usuario.setApellido(resultSet.getString("apellido"));
+				usuario.setEstado(resultSet.getInt("estado"));
+				
+				usuarios.add(usuario);
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		
+		return usuarios;
+	}
 }

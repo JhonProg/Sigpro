@@ -3,32 +3,26 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		$("#btnBuscarPedido").button();
+		$("#btnBuscarPedidosDirector").button();
 		
 		/** Validar formulario */
-		$("#fBuscarMisPedidos").validate({
-			errorLabelContainer: "#msnBuscarMisPedidos",
+		$("#fBuscarPedidosDirector").validate({
+			errorLabelContainer: "",
 			errorClass: "invalid",
 			rules: {
-				idMesMisPedidos:{
-					required: true
-				}
 			},
-			messages: {
-				idMesMisPedidos: {
-					required: "Selecione un mes o tipo de búsqueda."
-				}				
+			messages: {								
 			},
 			submitHandler: function(form) {
-				consultarMisPedidos(form);
+				consultarPedidosDirector(form);
 			}
 		});
 		
 	});	
 	
-	function consultarMisPedidos(form){
-		$("#cajaResultadosMisPedidos").html(getHTMLLoaging30()); 
-       	$("#btnBuscarPedido").attr('disabled',true);				
+	function consultarPedidosDirector(form){
+		$("#cajaResultadosPedidosDirctor").html(getHTMLLoaging30()); 
+       	$("#btnBuscarPedidosDirector").attr('disabled',true);				
 		$.ajax({
 			cache: false,
 			contentType: 'application/x-www-form-urlencoded; charset=iso-8859-1;', 
@@ -38,10 +32,11 @@
             dataType: "text",
             error: function(jqXHR, textStatus, errorThrown) {
                 alert(jqXHR.statusText);
+                $("#btnBuscarPedidosDirector").attr('disabled',false);	
 	        },
             success: function(data) {
-                $("#cajaResultadosMisPedidos").html(data);
-                $("#btnBuscarPedido").attr('disabled',false);	 
+                $("#cajaResultadosPedidosDirctor").html(data);
+                $("#btnBuscarPedidosDirector").attr('disabled',false);	 
             }
         });
 	}
@@ -49,11 +44,11 @@
 </script>
 
 <div align="left">
-	<form name="fBuscarMisPedidos" id="fBuscarMisPedidos" action="${ctx}/page/pedido" method="post">
-	<input type="hidden" name="action" value="consultarPedidosPorMesYUsuario"/>
+	<form name="fBuscarPedidosDirector" id="fBuscarPedidosDirector" action="${ctx}/page/pedido" method="post">
+	<input type="hidden" name="action" value="consultarPedidosPorMesYPromotores"/>
 
 	<fieldset>
-		<legend class="e6">Consulta Mis Pedidos</legend>
+		<legend class="e6">Consulta Pedidos</legend>
 		
 		<table style="cellspacing:2,  width:100%, border:0">
 				<col />
@@ -63,9 +58,9 @@
 				
 				      <table style="width:100% border:0">          
 				        <tr class="td3" valign="middle">
-				          <td height="33" align="right" valign="middle" width="300">
-				           	Mes o Campaña : 
-				           	<select name="idMesMisPedidos" id="idMesMisPedidos">
+				          <td height="33" align="right" valign="middle" width="320">
+				           	Mes/Campaña : 
+				           	<select name="idMes" id="idMes">
 				           		<option value="0">Todos</option>
 				           		<option value="1">Enero</option>
 								<option value="2">Febrero</option>
@@ -82,9 +77,23 @@
 				           	</select>  
 				           	&nbsp;&nbsp; &nbsp;&nbsp;
 				           	
+				         </td>
+				         <td>
+				         	Promotor:
+				           	<select name="idUsuario" id="idUsuario">
+				           		<option  value="0">
+									<c:out value="Todos"/>
+								</option>
+				           		<c:forEach items="${listaPromotores}" var="promotor" varStatus="loop">
+									<option  value="${promotor.idUsuario}">
+										<c:out value="${promotor.nombre} ${promotor.apellido}"/>
+									</option>
+								</c:forEach>
+				           	</select>
+				           	&nbsp;&nbsp; &nbsp;&nbsp;
 				         </td>   
 				          <td valign="middle" align="left">                       
-				           	<button type="submit" id="btnBuscarPedido" name="btnBuscarPedido">Consultar</button>
+				           	<button type="submit" id="btnBuscarPedidosDirector" name="btnBuscarPedidosDirector">Consultar</button>
 				          </td>
 						</table>
 					</tr>
@@ -93,6 +102,5 @@
 	</fieldset>
 	</form>
 </div>
-<div  align="center" id="msnBuscarMisPedidos" ></div>
 <br><br>
-<div id="cajaResultadosMisPedidos"></div>
+<div id="cajaResultadosPedidosDirctor"></div>
