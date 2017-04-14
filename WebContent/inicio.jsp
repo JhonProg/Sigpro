@@ -129,6 +129,9 @@
 						<li>
 							<a href="${ctx}/page/producto?action=cargarConsultarProducto">&nbsp;Productos<span>&nbsp;</span></a>
 						</li>
+						<li>
+							<a href="${ctx}/page/reporte?action=cargarVerReportesGraficos">&nbsp;Reportes<span>&nbsp;</span></a>
+						</li>
 					</c:if>	
 						
 					<!-- Promotor -->
