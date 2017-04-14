@@ -164,7 +164,7 @@
 
 	<fieldset>
 		<legend class="e6">Producto</legend>
-		<table border="0" width="100%" class="caja">
+		<table border="0" style="width: 100%" class="caja">
 		<col style="width: 15%"/>
 		<col/>
 		<tr>

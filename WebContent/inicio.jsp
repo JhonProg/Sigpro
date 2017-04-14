@@ -124,7 +124,7 @@
 					<!-- Director -->
 					<c:if test="${rol==3}">
 						<li>
-							<a href="${ctx}/page/pedido?action=cargarConsultarPedido"">&nbsp;Pedidos<span>&nbsp;</span></a>
+							<a href="${ctx}/page/pedido?action=cargarConsultarPedido">&nbsp;Pedidos<span>&nbsp;</span></a>
 						</li>
 					</c:if>	
 						

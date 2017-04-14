@@ -69,9 +69,9 @@
 				  <thead>
 					  <tr class="td3">
 					    <th>#</th>			    
-						<th>ID producto</span></th>
-						<th>SKU</span></th>	
-					  	<th>Codigo Barras</span></th>
+						<th>ID producto</th>
+						<th>SKU</th>	
+					  	<th>Codigo Barras</th>
 					  	<th>Estado</th>
 					  	<th>Categoria</th>	
 					  	<th>Nombre producto</th>		  				  	
