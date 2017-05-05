@@ -132,6 +132,12 @@
 						<li>
 							<a href="${ctx}/page/reporte?action=cargarVerReportesGraficos">&nbsp;Reportes<span>&nbsp;</span></a>
 						</li>
+						
+						<li>
+							<a href="${ctx}/page/meta?action=cargarInicioMeta">&nbsp;Metas<span>&nbsp;</span></a>
+						</li>
+						
+						
 					</c:if>	
 						
 					<!-- Promotor -->

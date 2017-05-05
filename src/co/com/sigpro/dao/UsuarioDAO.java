@@ -297,6 +297,59 @@ public class UsuarioDAO extends DataBaseDAO{
 	}
 	
 	
+	public List<Usuario> consultarUsuarioPorRol(final Integer idRol) throws DatoException{
+		final String METHOD_NAME = "[consultarUsuarioPorRol]";
+		Usuario usuario          = null;
+		List<Usuario> usuarios   = new ArrayList<>();
+				
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		StringBuffer CONSULTA = new StringBuffer();
+		
+		CONSULTA.append(" SELECT \r\n");
+		CONSULTA.append(" u.idusuario,u.idtipodocumento,u.idrol,u.numerodocumento,u.usuario,u.clave,u.nombre,u.apellido,u.estado \r\n");
+		CONSULTA.append(" FROM usuario u WHERE u.idrol=?\r\n");
+				
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			preparedStatement.setInt(1, idRol);
+			resultSet         = preparedStatement.executeQuery();
+			int columna       = 1;
+			
+			while(resultSet.next()){
+				columna = 1;
+				
+				usuario = new Usuario();
+				
+				usuario.setIdUsuario(resultSet.getInt(columna++));
+				usuario.setIdTipoDocumento(resultSet.getInt(columna++));
+				usuario.setIdRol(resultSet.getInt(columna++));
+				usuario.setNumeroDocumento(resultSet.getString(columna++));
+				usuario.setUsuario(resultSet.getString(columna++));
+				usuario.setClave(resultSet.getString(columna++));
+				usuario.setNombre(resultSet.getString(columna++));
+				usuario.setApellido(resultSet.getString(columna++));
+				usuario.setEstado(resultSet.getInt(columna++));
+				
+				usuarios.add(usuario);
+				
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		
+		return usuarios;
+	}
 	
 	public int editarUsuario(final Usuario usuarioEdicion) throws DatoException {
 		Integer estatus = 0;

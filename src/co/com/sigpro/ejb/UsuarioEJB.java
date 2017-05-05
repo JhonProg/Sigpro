@@ -88,4 +88,19 @@ public class UsuarioEJB extends DataBaseEJB{
 			throw new LogicaException(e.getMessage(),e);
 		}
 	}
+	
+	/**
+	 * Consultar un usuario por rol
+	 * @throws DataException 
+	 * */
+	public List<Usuario> consultarUsuarioPorRol(final Integer idRol) throws LogicaException{
+		try{
+			UsuarioDAO usuarioDAO = new UsuarioDAO(ds_consulta);
+			return usuarioDAO.consultarUsuarioPorRol(idRol);
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	}
+	
 }
