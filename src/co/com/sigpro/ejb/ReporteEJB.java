@@ -38,6 +38,15 @@ public class ReporteEJB extends DataBaseEJB {
 	}
 	
 	
+	public List<VentaPorPromotor> consultarVentasPorProducto() throws LogicaException{
+		try{
+			ReporteDAO reporteDAO = new ReporteDAO(ds_consulta);
+			return reporteDAO.consultarVentasPorProducto();
+		}catch(DatoException e){
+			logger.error(e.getMessage());
+			throw new LogicaException(e.getMessage(),e);
+		}
+	}
 	
 
 	public int consultarTotalVentasPorMes(int mes) throws LogicaException{

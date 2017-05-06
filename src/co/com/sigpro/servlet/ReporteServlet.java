@@ -135,6 +135,9 @@ public class ReporteServlet extends HttpServlet {
     		/** Consultar datos reporte 2: Cantidad de ventas ($) por promotor. */
     		List<VentaPorPromotor> ventasPorPromotor = reporteEJB.consultarVentasPorPromotor();
     		
+    		/** Consultar datos reporte 3: Ventas por productos */
+    		List<VentaPorPromotor> ventasPorProducto = reporteEJB.consultarVentasPorProducto();
+    		
     		/** ------ Alistamiento datos [1] ---------- */
     		String _pedidosPorPromotor = "";
     		int contadorPedidos        = 0;
@@ -165,8 +168,25 @@ public class ReporteServlet extends HttpServlet {
     		    		
     		logger.info("_ventasPorPromotor : "+_ventasPorPromotor);
     		
+    		/** ---- Alistamientyo datos [3]------ */
+    		String _ventasPorProducto  = "";
+    		int contadorVentasProducto = 0;
+    		
+    		for(VentaPorPromotor ventaPorPromotor : ventasPorProducto){
+    			if(contadorVentasProducto==0){
+    				/** Es el primero */
+    				_ventasPorProducto = ventaPorPromotor.getNombrePromotor()+","+ventaPorPromotor.getTotalVentas();
+    			}else{
+    				_ventasPorProducto = _ventasPorProducto+"|"+ventaPorPromotor.getNombrePromotor()+","+ventaPorPromotor.getTotalVentas();
+    			}
+    			contadorVentasProducto++;
+    		}
+    		
+    		
+    		
     		request.setAttribute("datosReportePedidosPorPromotor",_pedidosPorPromotor);
     		request.setAttribute("datosReporteVentasPorPromotor",_ventasPorPromotor);
+    		request.setAttribute("datosReporteVentasPorProducto",_ventasPorProducto);
     		
     		request.getRequestDispatcher("../pages/gerente/reportesPrincipal.jsp").forward(request, response);
     		

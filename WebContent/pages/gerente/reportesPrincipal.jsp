@@ -15,6 +15,7 @@
 			
 			graficarPedidosPorPromotor();
 			graficarVentasPorPromotor();
+			graficarVentasPorProducto();
 			
 			
 			$("#btnComparar").click(function(){
@@ -114,6 +115,71 @@
 		   $('#contenedorPedidosPorPromotor').highcharts(json);
 		}
 		
+		function graficarVentasPorProducto(){
+			var _vectorReporteVentasPorProducto = $("#datosReporteVentasPorProducto").val().split('|');
+			
+			var datos_entrada2 = [];
+			
+			var arrayLength = _vectorReporteVentasPorProducto.length;
+			try{
+				for (var i = 0; i < arrayLength; i++) {
+				    var datos    = _vectorReporteVentasPorProducto[i].split(',');
+				    
+				    var item = [];
+				    item [0] = datos[0];
+				    item [1] = parseInt(datos[1]);
+						 
+				    datos_entrada2.push(item);
+				    
+				}
+			}catch(error){
+				console.log("Error "+error);
+			}			
+			
+			var chart = {
+		       plotBackgroundColor: null,
+		       plotBorderWidth: null,
+		       plotShadow: false
+		   };
+			
+		   var title = {
+		      text: 'Ventas Por producto'   
+		   };     
+		   
+		   var tooltip = {
+		      pointFormat: '{series.name}: <b>{point.y:.1f}</b>'
+		   };
+		   
+		   var plotOptions = {
+		      pie: {
+		         allowPointSelect: true,
+		         cursor: 'pointer',
+		         dataLabels: {
+		            enabled: true,
+		            format: '<b>{point.name}</b>: {point.y:.1f}',
+		            style: {
+		               color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+		            }
+		         }
+		      }
+		   };
+		  
+		   var series= [{
+		      type: 'bar',
+		      name: 'Ventas',
+		      data: datos_entrada2
+		   }];
+		   
+		   var json = {};   
+		   json.chart = chart; 
+		   json.title = title;     
+		   json.tooltip = tooltip;  
+		   json.series = series;
+		   json.plotOptions = plotOptions;
+		   
+		   $('#contenedorVentasPorProductos').highcharts(json);
+		}
+		
 		
 		function graficarVentasPorPromotor(){
 									
@@ -211,7 +277,7 @@
 		   };
 		
 		   var title = {
-		      text: 'Ventas Entre Meses'   
+		      text: 'Ventas Entre Dos Meses'   
 		   };     
 		   
 		   var tooltip = {
@@ -255,7 +321,7 @@
 		
 		<input type="hidden" id="datosReportePedidosPorPromotor" name="datosReportePedidosPorPromotor" value="${datosReportePedidosPorPromotor}"/>
 		<input type="hidden" id="datosReporteVentasPorPromotor" name="datosReporteVentasPorPromotor" value="${datosReporteVentasPorPromotor}"/>
-		
+		<input type="hidden" id="datosReporteVentasPorProducto" name="datosReporteVentasPorProducto" value="${datosReporteVentasPorProducto}"/>
 					   			<fieldset>
 						<legend class="e6">Meta</legend>
 							<table border="0" width="100%" class="caja">
@@ -311,16 +377,14 @@
 		
 		<tr>
 		  	<td>
-<!-- 			   	<div id="contenedorComparativaVentasEntreMeses" style="width: 550px; height: 400px; margin: 0 auto"> -->
-<!-- 			   		<div id="contenedorFiltroMeses"> -->
-			   			
-<!-- 			   		</div> -->
-			   		<div id="contenedorResultadosComparativa" style="width: 550px; height: 400px; margin: 0 auto">
-			   		</div>
-<!-- 			   	</div> -->
+		   		<div id="contenedorResultadosComparativa" style="width: 550px; height: 400px; margin: 0 auto">
+		   			<h3>Seleccione los meses y presione Comparar para ver reporte.</h3>
+		   		</div>
 			 </td>
 			 <td>
-			   	<div id="" style="width: 550px; height: 400px; margin: 0 auto"></div>
+			   	<div id="contenedorVentasPorProductos" style="width: 550px; height: 400px; margin: 0 auto">
+			   		
+			   	</div>
 			 </td>
 		 </tr>
 		
