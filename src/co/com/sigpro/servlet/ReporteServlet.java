@@ -62,6 +62,9 @@ public class ReporteServlet extends HttpServlet {
 				case "compararVentasEntreDosMeses":
 					compararVentasEntreDosMeses(request, response);
 					break;
+				case "cargarVerReportesGraficosMetas":
+					cargarVerReportesGraficosMetas(request, response);
+					break;
 				default:
 					break;
 			}
@@ -135,6 +138,40 @@ public class ReporteServlet extends HttpServlet {
     		request.setAttribute("promotorMesMeta",promotorMesMeta);
     		
     		request.getRequestDispatcher("../pages/director/reportesPrincipal.jsp").forward(request, response);
+    		
+    	}catch(Exception e){
+    		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+    	}
+    }
+    
+    
+    private void cargarVerReportesGraficosMetas(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    	final String METHOD_NAME = "[cargarVerReportesGraficosMetas]";
+    	logger.info(CLASS_NAME+"-"+METHOD_NAME);
+    	
+    	try{
+    		
+    		    		    		
+    		
+    		/** promotor, mes, valor */
+    		
+    		List<VentaPorPromotor> ventasPromotorMes = reporteEJB.consultarVentasPorPromotorMes();
+    		
+    		for(VentaPorPromotor v :ventasPromotorMes){
+    			v.setMesNombre(Calendar.getNombreMesPorNumero(v.getMes()));
+    		}
+    		
+    		/** promotor, mes, meta */
+    		List<VentaPorPromotor> promotorMesMeta = reporteEJB.consultarPromotorMesMeta();
+    		
+    		for(VentaPorPromotor v :promotorMesMeta){
+    			v.setMesNombre(Calendar.getNombreMesPorNumero(v.getMes()));
+    		}
+    		
+    		request.setAttribute("ventasPromotorMes",ventasPromotorMes);
+    		request.setAttribute("promotorMesMeta",promotorMesMeta);
+    		
+    		request.getRequestDispatcher("../pages/promotor/reportesPrincipal.jsp").forward(request, response);
     		
     	}catch(Exception e){
     		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());

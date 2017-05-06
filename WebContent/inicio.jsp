@@ -152,7 +152,12 @@
 						
 						<li>
 							<a href="${ctx}/page/pedido?action=misPedidos">&nbsp;Mis Pedidos<span>&nbsp;</span></a>
-						</li>	
+						</li>
+						
+						<li>
+							<a href="${ctx}/page/reporte?action=cargarVerReportesGraficosMetas">&nbsp;Metas<span>&nbsp;</span></a>
+						</li>
+							
 					</c:if>	
 							
 				</ul>
