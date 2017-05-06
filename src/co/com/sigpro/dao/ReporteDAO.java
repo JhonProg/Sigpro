@@ -112,6 +112,95 @@ private Log logger = new Log();
 		return ventasPorPromotor;
 	}
 	
+	//consultarVentasPorPromotorMes
+	public List<VentaPorPromotor> consultarVentasPorPromotorMes() throws DatoException{
+		final String METHOD_NAME = "[consultarVentasPorPromotorMes]";
+		
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		List<VentaPorPromotor> ventasPorPromotor = new ArrayList<>();
+		VentaPorPromotor ventaPorPromotor        = null;
+		StringBuffer CONSULTA                    = new StringBuffer();
+		
+		CONSULTA.append(" SELECT u.nombre AS promotor,SUM(pd.cantidad*(pr.preciounitario-pr.preciodescuento)) AS ventas,pe.mes AS mes  ");
+		CONSULTA.append(" FROM pedido_detalle pd,pedido pe, usuario u,producto pr  ");
+		CONSULTA.append(" WHERE pd.idpedido = pe.idpedido  ");
+		CONSULTA.append(" AND pe.idusuario=u.idusuario  ");
+		CONSULTA.append(" AND pd.idproducto=pr.idproducto ");
+		CONSULTA.append(" GROUP BY u.nombre,pe.mes ");
+		
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			resultSet         = preparedStatement.executeQuery();
+						
+			while(resultSet.next()){
+				ventaPorPromotor = new VentaPorPromotor();
+				
+				ventaPorPromotor.setNombrePromotor(resultSet.getString("promotor"));
+				ventaPorPromotor.setTotalVentas(resultSet.getInt("ventas"));
+				ventaPorPromotor.setMes(resultSet.getInt("mes"));
+				
+				ventasPorPromotor.add(ventaPorPromotor);
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		return ventasPorPromotor;
+	}
+	
+	
+	public List<VentaPorPromotor> consultarPromotorMesMeta() throws DatoException{
+		final String METHOD_NAME = "[consultarPromotorMesMeta]";
+		
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		List<VentaPorPromotor> ventasPorPromotor = new ArrayList<>();
+		VentaPorPromotor ventaPorPromotor        = null;
+		StringBuffer CONSULTA                    = new StringBuffer();
+		
+		CONSULTA.append(" SELECT u.nombre,u.apellido,m.idmes AS mes,m.valor as meta ");
+		CONSULTA.append(" FROM meta m,usuario u ");
+		CONSULTA.append(" WHERE u.idusuario=m.idusuario ");
+		
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			resultSet         = preparedStatement.executeQuery();
+						
+			while(resultSet.next()){
+				ventaPorPromotor = new VentaPorPromotor();
+				
+				ventaPorPromotor.setNombrePromotor(resultSet.getString("nombre"));
+				ventaPorPromotor.setApellidoPromotor(resultSet.getString("apellido"));
+				ventaPorPromotor.setMes(resultSet.getInt("mes"));
+				ventaPorPromotor.setMeta(resultSet.getInt("meta"));
+				
+				ventasPorPromotor.add(ventaPorPromotor);
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		return ventasPorPromotor;
+	}
 	
 	public List<VentaPorPromotor> consultarVentasPorProducto() throws DatoException{
 		final String METHOD_NAME = "[consultarVentasPorProducto]";

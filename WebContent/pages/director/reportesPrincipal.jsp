@@ -169,7 +169,102 @@
 			   </td>
 		  </tr>
 		  <tr>
-		  	<!-- Fila reservada para otros reportes -->
+			  	<td>
+				   	<div id="contenedorMetasPromotor" style="width: 550px; height: 400px; margin: 0 auto">
+				   		<!-- Tabla uno: promotor, mes, valor -->
+				   		<br>
+				   		<fieldset>
+						<legend class="e6">Ventas por Mes</legend>
+						
+						<c:choose>
+								<c:when test="${fn:length(ventasPromotorMes) eq 0}">
+									<div class="msgInfo1" align="left">No se encontraron coincidencias.</div>
+								</c:when>		
+								<c:otherwise>
+									<div>
+									<div style="clear: both;"></div>
+									<div id="divPedidos" >
+										<table width="100%" border="0" id="pedidos" class="tExcel tRowSelect">
+										  
+										  	<col style="width: 20px;"/>
+										  	<col style="width: 20px;"/>
+									 	  	<col style="width: 20px;"/>
+									 	  	<col style="width: 20px;"/>
+									 	  	
+									 	  	<thead>
+											  <tr class="td3">
+											    <th>Promotor Nombre</th>
+											    <th>Promotor Apellido</th>			    
+												<th>Mes</th>
+												<th>Meta</th>
+											  </tr>
+										  </thead>
+									 	  
+									 	 <tbody>
+										  	<c:forEach items="${promotorMesMeta}" var="venta" varStatus="loop">
+											  <tr>
+											  	<td><c:out value="${venta.nombrePromotor}"/></td>
+											  	<td><c:out value="${venta.apellidoPromotor}"/></td>			  		
+											 	<td><c:out value="${venta.mesNombre}"/></td>
+											 	<td><c:out value="${venta.meta}"/></td>
+											 	</tr>
+											 </c:forEach>
+											</tbody>
+									 	  
+									 	  </table>
+									 	  </div>
+						 </c:otherwise>
+									 	  
+					</c:choose>		
+				   	</div>
+				</td>
+				<td>
+				   	<div id="contenedorMetasPromotor" style="width: 550px; height: 400px; margin: 0 auto">
+				   		<!-- Tabla dos: promotor, mes, meta -->
+				   		<br>
+				   		<fieldset>
+						<legend class="e6">Ventas por Mes</legend>
+						
+						<c:choose>
+								<c:when test="${fn:length(ventasPromotorMes) eq 0}">
+									<div class="msgInfo1" align="left">No se encontraron coincidencias.</div>
+								</c:when>		
+								<c:otherwise>
+									<div>
+									<div style="clear: both;"></div>
+									<div id="divPedidos" >
+										<table width="100%" border="0" id="pedidos" class="tExcel tRowSelect">
+										  
+										  	<col style="width: 20px;"/>
+										  	<col style="width: 20px;"/>
+									 	  	<col style="width: 30px;"/>
+									 	  	
+									 	  	<thead>
+											  <tr class="td3">
+											    <th>Promotor</th>			    
+												<th>Venta</th>
+												<th>Mes</th>
+											  </tr>
+										  </thead>
+									 	  
+									 	 <tbody>
+										  	<c:forEach items="${ventasPromotorMes}" var="venta" varStatus="loop">
+											  <tr>
+											  	<td><c:out value="${venta.nombrePromotor}"/></td>			  		
+											  	<td><c:out value="${venta.totalVentas}"/></td>
+											 	<td><c:out value="${venta.mesNombre}"/></td>
+											 	</tr>
+											 </c:forEach>
+											</tbody>
+									 	  
+									 	  </table>
+									 	  </div>
+						 </c:otherwise>
+									 	  
+					</c:choose>		 	  
+				   		
+				   	</div>
+				</td>
 		  </tr>
 		  
 		</table>

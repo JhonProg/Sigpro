@@ -83,6 +83,8 @@ public class ReporteServlet extends HttpServlet {
     		/** Consultar datos reporte 2: Cantidad de ventas ($) por promotor. */
     		List<VentaPorPromotor> ventasPorPromotor = reporteEJB.consultarVentasPorPromotor();
     		
+    		
+    		
     		/** ------ Alistamiento datos [1] ---------- */
     		String _pedidosPorPromotor = "";
     		int contadorPedidos        = 0;
@@ -111,10 +113,26 @@ public class ReporteServlet extends HttpServlet {
     			contadorVentas++;
     		}
     		    		
-    		logger.info("_ventasPorPromotor : "+_ventasPorPromotor);
+    		
+    		/** promotor, mes, valor */
+    		
+    		List<VentaPorPromotor> ventasPromotorMes = reporteEJB.consultarVentasPorPromotorMes();
+    		
+    		for(VentaPorPromotor v :ventasPromotorMes){
+    			v.setMesNombre(Calendar.getNombreMesPorNumero(v.getMes()));
+    		}
+    		
+    		/** promotor, mes, meta */
+    		List<VentaPorPromotor> promotorMesMeta = reporteEJB.consultarPromotorMesMeta();
+    		
+    		for(VentaPorPromotor v :promotorMesMeta){
+    			v.setMesNombre(Calendar.getNombreMesPorNumero(v.getMes()));
+    		}
     		
     		request.setAttribute("datosReportePedidosPorPromotor",_pedidosPorPromotor);
     		request.setAttribute("datosReporteVentasPorPromotor",_ventasPorPromotor);
+    		request.setAttribute("ventasPromotorMes",ventasPromotorMes);
+    		request.setAttribute("promotorMesMeta",promotorMesMeta);
     		
     		request.getRequestDispatcher("../pages/director/reportesPrincipal.jsp").forward(request, response);
     		
@@ -181,8 +199,6 @@ public class ReporteServlet extends HttpServlet {
     			}
     			contadorVentasProducto++;
     		}
-    		
-    		
     		
     		request.setAttribute("datosReportePedidosPorPromotor",_pedidosPorPromotor);
     		request.setAttribute("datosReporteVentasPorPromotor",_ventasPorPromotor);

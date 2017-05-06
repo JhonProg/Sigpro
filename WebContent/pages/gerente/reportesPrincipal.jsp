@@ -364,11 +364,10 @@
 							           	</select> 
 									</td>
 									
-									<th nowrap="nowrap" style="text-align: right;">Mes/campaña:</th>
+									<th nowrap="nowrap" style="text-align: right;">Accion</th>
 									<td>
 										<button type="button" id="btnComparar" name="btnComparar">Comparar</button>
 									</td>
-									
 								</tr>
 							</table>
 						</fieldset>
