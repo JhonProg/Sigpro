@@ -1,6 +1,7 @@
 package co.com.sigpro.servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import co.com.sigpro.bean.PedidoPorPromotor;
 import co.com.sigpro.bean.VentaPorPromotor;
 import co.com.sigpro.ejb.ReporteEJB;
+import co.com.sigpro.util.Calendar;
 import co.com.sigpro.util.Log;
 
 /**
@@ -53,6 +55,12 @@ public class ReporteServlet extends HttpServlet {
     		switch (accion) {
 				case "cargarVerReportesGraficos":
 					cargarVerReportesGraficos(request, response);
+					break;
+				case "cargarVerReportesGraficosGerente":
+					cargarVerReportesGraficosGerente(request, response);
+					break;
+				case "compararVentasEntreDosMeses":
+					compararVentasEntreDosMeses(request, response);
 					break;
 				default:
 					break;
@@ -113,6 +121,82 @@ public class ReporteServlet extends HttpServlet {
     	}catch(Exception e){
     		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
     	}
+    }
+    
+    private void cargarVerReportesGraficosGerente(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    	final String METHOD_NAME = "[cargarVerReportesGraficosGerente]";
+    	logger.info(CLASS_NAME+"-"+METHOD_NAME);
+    	
+    	try{
+    		
+    		/** Consultar datos reporte 1: Cantidad de pedidos por promotor. */
+    		List<PedidoPorPromotor> pedidosPorPromotor = reporteEJB.consultarPedidosPorPromotor();
+    		
+    		/** Consultar datos reporte 2: Cantidad de ventas ($) por promotor. */
+    		List<VentaPorPromotor> ventasPorPromotor = reporteEJB.consultarVentasPorPromotor();
+    		
+    		/** ------ Alistamiento datos [1] ---------- */
+    		String _pedidosPorPromotor = "";
+    		int contadorPedidos        = 0;
+    		
+    		for(PedidoPorPromotor pedidoPorPromotor : pedidosPorPromotor){
+    			if(contadorPedidos==0){
+    				/** Es el primero */
+    				_pedidosPorPromotor = pedidoPorPromotor.getNombrePromotor()+","+pedidoPorPromotor.getCantidadPedidos();
+    			}else{
+    				_pedidosPorPromotor = _pedidosPorPromotor+"|"+pedidoPorPromotor.getNombrePromotor()+","+pedidoPorPromotor.getCantidadPedidos();
+    			}
+    			contadorPedidos++;
+    		}
+    		
+    		/** ------ Alistamiento datos [2] ---------- */
+    		String _ventasPorPromotor = "";
+    		int contadorVentas        = 0;
+    		
+    		for(VentaPorPromotor ventaPorPromotor : ventasPorPromotor){
+    			if(contadorVentas==0){
+    				/** Es el primero */
+    				_ventasPorPromotor = ventaPorPromotor.getNombrePromotor()+","+ventaPorPromotor.getTotalVentas();
+    			}else{
+    				_ventasPorPromotor = _ventasPorPromotor+"|"+ventaPorPromotor.getNombrePromotor()+","+ventaPorPromotor.getTotalVentas();
+    			}
+    			contadorVentas++;
+    		}
+    		    		
+    		logger.info("_ventasPorPromotor : "+_ventasPorPromotor);
+    		
+    		request.setAttribute("datosReportePedidosPorPromotor",_pedidosPorPromotor);
+    		request.setAttribute("datosReporteVentasPorPromotor",_ventasPorPromotor);
+    		
+    		request.getRequestDispatcher("../pages/gerente/reportesPrincipal.jsp").forward(request, response);
+    		
+    	}catch(Exception e){
+    		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+    	}
+    }
+    
+    private void compararVentasEntreDosMeses(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    	logger.info("compararVentasEntreDosMeses");
+    	
+    	try{
+    		
+    		response.setContentType("text/plain");
+    		PrintWriter salida = response.getWriter();
+    		
+    		int idMesUno = Integer.parseInt(request.getParameter("idMesUno"));
+    		int idMesDos = Integer.parseInt(request.getParameter("idMesDos"));
+    		
+    		int ventaMesUno = reporteEJB.consultarTotalVentasPorMes(idMesUno);
+    		int ventaMesDos = reporteEJB.consultarTotalVentasPorMes(idMesDos);
+    		
+    		String valoresReporte = Calendar.getNombreMesPorNumero(idMesUno)+","+ventaMesUno+"|"+Calendar.getNombreMesPorNumero(idMesDos)+","+ventaMesDos;
+    		
+    		salida.println(valoresReporte);
+    		
+    	}catch(Exception e){
+    		response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, e.getMessage());
+    	}
+    	
     }
     
     /**

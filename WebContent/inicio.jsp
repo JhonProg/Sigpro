@@ -117,7 +117,7 @@
 					<!-- Gerente -->
 					<c:if test="${rol==2}">
 						<li>
-							<a href="#">&nbsp;Reportes<span>&nbsp;</span></a>
+							<a href="${ctx}/page/reporte?action=cargarVerReportesGraficosGerente">&nbsp;Reportes<span>&nbsp;</span></a>
 						</li>
 					</c:if>	
 					

@@ -111,4 +111,43 @@ private Log logger = new Log();
 		}
 		return ventasPorPromotor;
 	}
+	
+	public int consultarTotalVentasPorMes(int mes) throws DatoException{
+		final String METHOD_NAME = "[consultarTotalVentasPorMes]";
+		
+		logger.info(CLASS_NAME+"-"+METHOD_NAME);
+		
+		int ventas = 0;
+		StringBuffer CONSULTA = new StringBuffer();
+		
+		CONSULTA.append(" SELECT SUM(pd.cantidad*(pr.preciounitario-pr.preciodescuento)) AS ventas ");
+		CONSULTA.append(" FROM pedido_detalle pd,pedido pe, usuario u,producto pr ");
+		CONSULTA.append(" WHERE pd.idpedido = pe.idpedido ");
+		CONSULTA.append(" AND pe.idusuario=u.idusuario ");
+		CONSULTA.append(" AND pd.idproducto=pr.idproducto ");
+		CONSULTA.append(" AND pe.mes= "+mes);
+		
+		logger.info(CONSULTA.toString());
+		
+		try{
+			conexion          = dataSource.getConnection();
+			preparedStatement = conexion.prepareStatement(CONSULTA.toString());
+			resultSet         = preparedStatement.executeQuery();
+						
+			if(resultSet.next()){
+				ventas = resultSet.getInt("ventas");
+			}
+			
+		}catch(SQLException e){
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			throw new DatoException(e.getMessage(),e);
+		} finally {
+			closeConnections();
+		}
+		return ventas;
+	}
+	
 }
